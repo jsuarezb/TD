@@ -5,6 +5,10 @@ import openfl.display.Sprite;
 class Tower extends Sprite
 {
 
+    private static inline var WIDTH = 10;
+
+    private static inline var HEIGHT = 10;
+
     // Status variables
     private var damage : Float;
 
@@ -17,7 +21,9 @@ class Tower extends Sprite
     private var kills : Int;
 
     // Internal variables
-    private var isSelected : Bool = false;
+    public var isSelected : Bool = false;
+
+    private var isMoving : Bool = false;
 
     private var xSpeed : Float = 0;
 
@@ -35,13 +41,23 @@ class Tower extends Sprite
 */
 
     public function new (damage : Float, speed : Float, rateOfFire : Float,
-            range : Float, kills : Float)
+            range : Float, kills : Int)
     {
+        super ();
+
         this.damage = damage;
         this.speed = speed;
         this.rateOfFire = rateOfFire;
         this.range = range;
         this.kills = kills;
+
+        this.draw ();
+    }
+
+    private function draw () : Void
+    {
+        this.graphics.lineStyle(2, 0);
+        this.graphics.drawRect(0, 0, Tower.WIDTH, Tower.HEIGHT);
     }
 
     public function moveTo (x : Float, y : Float) : Void
@@ -50,15 +66,20 @@ class Tower extends Sprite
 
         this.xNext = x;
         this.yNext = y;
+        this.isMoving = true;
     }
 
     public function move () : Void
     {
-        var xDif = x - this.x;
-        var yDif = y - this.y;
+        if (!this.isMoving) return;
+
+        var xDif = this.xNext - this.x;
+        var yDif = this.yNext - this.y;
         var dist = Math.sqrt(yDif * yDif + xDif * xDif);
 
-        if (dist < this.speed) {
+        if (dist <= this.speed) {
+            this.isMoving = false;
+
             this.x = this.xNext;
             this.y = this.yNext;
         } else {
