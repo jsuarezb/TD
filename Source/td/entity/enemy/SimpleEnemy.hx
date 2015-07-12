@@ -1,7 +1,5 @@
 package td.entity.enemy;
 
-import td.entity.Enemy;
-
 class SimpleEnemy extends Enemy
 {
 
@@ -19,10 +17,7 @@ class SimpleEnemy extends Enemy
 
     public function new (level : Int, zones : Array<Int>)
     {
-        super ();
-
-        this.level = level;
-        this.zones = zones;
+        super (level, zones);
 
         this.hp = SimpleEnemy.BASE_HP * level;
         this.damage = SimpleEnemy.BASE_DAMAGE * level;

@@ -3,7 +3,8 @@ package td.util;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
-import td.entity.*;
+import td.entity.tower.*;
+import td.entity.enemy.*;
 import td.event.*;
 
 class GameStage extends Sprite
@@ -54,7 +55,8 @@ class GameStage extends Sprite
 
     public function addEnemy (enemy : Enemy) : Void
     {
-        enemy.container = this;
+        trace ("Adding enemy");
+        enemy.setContainer(this);
         enemies.push (enemy);
 
         addChild (enemy);

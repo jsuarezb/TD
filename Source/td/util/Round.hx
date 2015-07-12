@@ -6,24 +6,38 @@ import openfl.events.Event;
 import openfl.events.TimerEvent;
 import openfl.utils.Timer;
 
-import td.util.EnemyData;
+import td.entity.enemy.Enemy;
 import td.event.EnemyEvent;
 
 class Round extends EventDispatcher
 {
 
-    public var enemyData : EnemyData;
+    private var enemy : String;
+
+    private var level : Dynamic;
+
+    private var zones : Array<Int>;
+
+    private var timeInterval : Dynamic;
 
     private var timer : Timer;
 
-    public function new ()
+    private var amount : Int;
+
+    public function new (enemy : String, level : Dynamic, zones : Array<Int>, timeInterval : Dynamic, amount : Int)
     {
         super ();
+
+        this.enemy = enemy;
+        this.level = level;
+        this.zones = zones;
+        this.timeInterval = timeInterval;
+        this.amount = amount;
     }
 
     public function tick () : Void
     {
-        var time = Math.random () * (enemyData.timer.max - enemyData.timer.min) + enemyData.timer.min;
+        var time = Math.random () * (this.timeInterval.max - this.timeInterval.min) + this.timeInterval.min;
 
         timer = new Timer (time);
 
@@ -33,10 +47,10 @@ class Round extends EventDispatcher
 
     private function onTimer (e : TimerEvent) : Void
     {
-        trace ("On Timer");
-        var e = new EnemyEvent (EnemyEvent.SENT, enemyData);
+        var enemy = Enemy.create (this.enemy, this.level, this.zones);
+        var event = new EnemyEvent (EnemyEvent.SENT, enemy);
 
-        dispatchEvent (e);
+        dispatchEvent (event);
     }
 
 }

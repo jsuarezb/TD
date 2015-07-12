@@ -1,11 +1,9 @@
-package td.entity;
+package td.entity.enemy;
 
 import openfl.display.Sprite;
 import openfl.events.Event;
 
-import td.util.EnemyData;
 import td.util.GameStage;
-import td.entity.enemy.*;
 
 class Enemy extends Sprite
 {
@@ -36,30 +34,38 @@ class Enemy extends Sprite
 
     public var zones : Array<Int>;
 
-    public var container (null, default): GameStage;
+    public var gameStage (null, default): GameStage;
 
-    public function new ()
+    public function new (level : Dynamic, zones : Array<Int>)
     {
         super ();
 
-        this.graphics.beginFill(0x000000);
-        this.graphics.drawRect(0, 0, 10, 10);
+        this.level = level;
+        this.zones = zones;
+
+        this.graphics.beginFill (0x000000);
+        this.graphics.drawRect (0, 0, 10, 10);
 
         addEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
     }
 
-    public static function create (enemy : EnemyData) : Enemy
+    public static function create (enemy : String, level : Dynamic, zones : Array<Int>) : Enemy
     {
-        var level = Std.int (
-            Math.random () * (enemy.level.max - enemy.level.min) + enemy.level.min
-        );
+        var level = Std.int (Math.random () * (level.max - level.min) + level.min);
 
-        switch ( enemy.enemyType ) {
+        switch ( enemy ) {
             case Enemy.SIMPLE_ENEMY:
-                return new SimpleEnemy (level, enemy.zones);
+                return new SimpleEnemy (level, zones);
+
+            default:
+                return null;
         }
 
-        return null;
+    }
+
+    public function setContainer (gameStage : GameStage) : Void
+    {
+        this.gameStage = gameStage;
     }
 
     /**
@@ -89,7 +95,7 @@ class Enemy extends Sprite
         switch ( i ) {
             case Enemy.LEFT_STAGE:
                 this.x = -this.width;
-                this.y = Math.random () * this.container._height;
+                this.y = Math.random () * this.gameStage._height;
 
             case Enemy.TOP_STAGE:
 

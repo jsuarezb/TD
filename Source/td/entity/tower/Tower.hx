@@ -1,7 +1,6 @@
-package td.entity;
+package td.entity.tower;
 
 import openfl.display.Sprite;
-import td.entity.tower.*;
 
 class Tower extends Sprite
 {

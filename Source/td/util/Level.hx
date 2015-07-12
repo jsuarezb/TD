@@ -13,16 +13,16 @@ class Level extends EventDispatcher {
 
     private var levelNumber : Int;
 
-    private var gStage : GameStage;
+    private var gameStage : GameStage;
 
     private var rounds : Array<Round>;
 
-    public function new (level : Int, gStage : GameStage)
+    public function new (level : Int, gameStage : GameStage)
     {
         super ();
 
         this.levelNumber = level;
-        this.gStage = gStage;
+        this.gameStage = gameStage;
         this.rounds = new Array<Round> ();
 
         this.loadRounds ();
@@ -32,13 +32,12 @@ class Level extends EventDispatcher {
     {
         var json = Assets.getText (LEVELS_PATH);
         var levels = haxe.Json.parse (json);
-        var rounds : Array<EnemyData> = levels[levelNumber].rounds;
+        var rounds : Array<Dynamic> = levels[levelNumber].rounds;
 
         var round : Round;
         for (data in rounds)
         {
-            round = new Round ();
-            round.enemyData = data;
+            round = new Round (data.enemyType, data.level, data.zones, data.timer, data.amount);
             round.addEventListener (EnemyEvent.SENT, sendEnemy);
 
             this.rounds.push (round);
@@ -47,8 +46,6 @@ class Level extends EventDispatcher {
 
     public function start () : Void
     {
-        trace ("Start level");
-        
         for (round in this.rounds)
         {
             round.tick ();
@@ -58,10 +55,8 @@ class Level extends EventDispatcher {
 
     private function sendEnemy (e:EnemyEvent)
     {
-        var enemy = Enemy.create (e.enemyData);
-
-        gStage.addEnemy (enemy);
-        trace ("Enemy sent");
+        trace (e);
+        gameStage.addEnemy (e.enemy);
     }
 
 }
