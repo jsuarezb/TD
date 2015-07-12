@@ -1,26 +1,41 @@
 package td.entity;
 
 import openfl.display.Sprite;
+import td.entity.tower.*;
 
 class Tower extends Sprite
 {
 
-    private static inline var WIDTH = 10;
+    // Tower types
+    public static inline var SIMPLE_TOWER : String = "simple_tower";
 
-    private static inline var HEIGHT = 10;
+    public static inline var SPLASH_TOWER : String = "splash_tower";
 
-    // Status variables
-    private var damage : Float;
+    public static inline var LASER_TOWER : String = "laser_tower";
 
-    private var speed : Float;
+    public static inline var SNIPER_TOWER : String = "sniper_tower";
 
-    private var rateOfFire : Float;
+    public static inline var POISON_TOWER : String = "poison_tower";
 
-    private var range : Float;
+    // Tower dimensions
+    private static inline var WIDTH = 15;
 
-    private var kills : Int;
+    private static inline var HEIGHT = 15;
 
-    // Internal variables
+    // Serializable variables
+    public var damage : Float;
+
+    public var speed : Float;
+
+    public var rateOfFire : Float;
+
+    public var range : Float;
+
+    public var kills : Int;
+
+    public var level : Int;
+
+    // In-game variables
     public var isSelected : Bool = false;
 
     private var isMoving : Bool = false;
@@ -40,21 +55,24 @@ class Tower extends Sprite
     var items:Array<Item>;
 */
 
-    public function new (damage : Float, speed : Float, rateOfFire : Float,
-            range : Float, kills : Int)
+    public function new ()
     {
         super ();
-
-        this.damage = damage;
-        this.speed = speed;
-        this.rateOfFire = rateOfFire;
-        this.range = range;
-        this.kills = kills;
 
         this.draw ();
     }
 
-    private function draw () : Void
+    public static function create (tower : String, level : Int, kills : Int) : Tower {
+        switch (tower) {
+            case Tower.SIMPLE_TOWER:
+                return new SimpleTower (level, kills);
+
+        }
+
+        return null;
+    }
+
+    public function draw () : Void
     {
         this.graphics.lineStyle(2, 0);
         this.graphics.drawRect(0, 0, Tower.WIDTH, Tower.HEIGHT);
@@ -89,5 +107,7 @@ class Tower extends Sprite
             this.y += Math.sin(angle) * this.speed;
         }
     }
+
+    public function shoot () : Void {}
 
 }
