@@ -2,7 +2,10 @@ package td.entity.tower;
 
 import openfl.display.Sprite;
 
-class Tower extends Sprite
+import td.entity.Entity;
+import td.util.GameStage;
+
+class Tower extends Sprite implements Entity
 {
 
     // Tower types
@@ -47,6 +50,10 @@ class Tower extends Sprite
 
     private var yNext : Float;
 
+    public var index : Int;
+
+    private var gameStage : GameStage;
+
 /*
     TODO
     var status:Array<TowerStatus>;
@@ -61,20 +68,28 @@ class Tower extends Sprite
         this.draw ();
     }
 
-    public static function create (tower : String, level : Int, kills : Int) : Tower {
-        switch (tower) {
+    public static function create (tower : String, level : Int, kills : Int) : Tower
+    {
+        switch (tower)
+        {
             case Tower.SIMPLE_TOWER:
                 return new SimpleTower (level, kills);
 
-        }
+            default:
+                return null;
 
-        return null;
+        }
     }
 
     public function draw () : Void
     {
         this.graphics.lineStyle(2, 0);
-        this.graphics.drawRect(0, 0, Tower.WIDTH, Tower.HEIGHT);
+        this.graphics.drawRect(
+            -Tower.WIDTH / 2,
+            -Tower.HEIGHT / 2,
+            Tower.WIDTH,
+            Tower.HEIGHT
+        );
     }
 
     public function moveTo (x : Float, y : Float) : Void
@@ -107,6 +122,19 @@ class Tower extends Sprite
         }
     }
 
-    public function shoot () : Void {}
+    public function setGameStage (gameStage : GameStage) : Void
+    {
+        this.gameStage = gameStage;
+    }
+
+    /**
+     * Towers won't take damage
+     */
+    public function takeDamage (e : Entity, d : Float) : Void {}
+
+    public function inflictDamage (e : Entity) : Void
+    {
+        e.takeDamage (this, this.damage);
+    }
 
 }

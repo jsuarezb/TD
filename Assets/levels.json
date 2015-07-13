@@ -4,10 +4,10 @@
         "rounds": [
             {
                 "enemyType": "simple_enemy",
-                "zones": [0],
-                "amount": 40,
+                "zones": [0, 1, 2, 3],
+                "amount": 1000,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 1000, "max": 1500}
+                "timer": {"min": 10, "max": 30}
             }
         ]
     }

@@ -21,11 +21,8 @@ class SimpleEnemy extends Enemy
     {
         super (level, zones);
 
-        this.graphics.beginFill (0x000000);
-        this.graphics.drawRect (0, 0, this.radius, this.radius);
-
         this.graphics.beginFill(0xFF0000);
-        this.graphics.drawCircle(this.radius / 2, this.radius / 2, this.radius / 4);
+        this.graphics.drawCircle(0, 0, this.radius / 2);
 
         this.hp = SimpleEnemy.BASE_HP * level;
         this.damage = SimpleEnemy.BASE_DAMAGE * level;

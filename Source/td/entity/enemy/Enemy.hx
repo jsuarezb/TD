@@ -70,7 +70,7 @@ class Enemy extends Sprite implements Entity
     /**
      * Stores the `gameStage` sprite that contains this Enemy instance
      */
-    public function setContainer (gameStage : GameStage) : Void
+    public function setGameStage (gameStage : GameStage) : Void
     {
         this.gameStage = gameStage;
     }
@@ -89,14 +89,14 @@ class Enemy extends Sprite implements Entity
         dispatchEvent (new EnemyEvent(EnemyEvent.DEAD, this));
     }
 
-    public function onAddedToStage (e:Event) : Void
+    public function onAddedToStage (e : Event) : Void
     {
         removeEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
 
         var l = zones.length;
         var i = Std.int (Math.random () * l);
 
-        switch ( i ) {
+        switch ( zones[i] ) {
             case Enemy.LEFT_STAGE:
                 this.x = -this.width;
                 this.y = Math.random () * this.gameStage._height;
@@ -119,7 +119,12 @@ class Enemy extends Sprite implements Entity
 
     }
 
-    public function takeDamage (e : Entity, d : Float) : Void {}
+    public function takeDamage (e : Entity, d : Float) : Void {
+        this.hp -= d;
+
+        if (this.hp <= 0)
+            dispatchEvent (new EnemyEvent (EnemyEvent.DEAD, this));
+    }
 
     public function inflictDamage (e : Entity) : Void {}
 

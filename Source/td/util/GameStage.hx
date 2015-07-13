@@ -61,16 +61,31 @@ class GameStage extends Sprite
      */
     public function startLevel () : Void
     {
-        this.base.addEventListener(PlayerBaseEvent.BASE_DESTROYED, onBaseDestroyed);
+        this.base.addEventListener (PlayerBaseEvent.BASE_DESTROYED, onBaseDestroyed);
 
         level = new Level (levelNumber, this);
         level.start ();
     }
 
+    public function addTower (tower : Tower) : Void
+    {
+        tower.index = towerCounter;
+        tower.setGameStage (this);
+        towers.set (tower.index, tower);
+
+        addChild (tower);
+        towerCounter++;
+    }
+
+    public function getEnemies () : IntMap<Enemy>
+    {
+        return enemies;
+    }
+
     public function addEnemy (enemy : Enemy) : Void
     {
         enemy.index = enemyCounter;
-        enemy.setContainer (this);
+        enemy.setGameStage (this);
         enemies.set (enemy.index, enemy);
 
         enemy.addEventListener (EnemyEvent.DEAD, removeEnemy);
@@ -106,7 +121,6 @@ class GameStage extends Sprite
                 throw "Non existent level end";
         }
 
-        for (i in )
     }
 
     private function onAdded (e : Event) : Void
@@ -123,7 +137,13 @@ class GameStage extends Sprite
             endLevel (Level.ENEMIES_DESTROYED);
         }
 
-        for (e in enemies) {
+        for (t in towers)
+        {
+            t.move ();
+        }
+
+        for (e in enemies)
+        {
             e.move ();
         }
     }
