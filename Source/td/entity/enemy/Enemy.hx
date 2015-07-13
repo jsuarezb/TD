@@ -5,8 +5,9 @@ import openfl.events.Event;
 
 import td.event.EnemyEvent;
 import td.util.GameStage;
+import td.entity.Entity;
 
-class Enemy extends Sprite
+class Enemy extends Sprite implements Entity
 {
 
     public static inline var LEFT_STAGE : Int = 0;
@@ -49,6 +50,9 @@ class Enemy extends Sprite
         addEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
     }
 
+    /**
+     * Creation of enemy
+     */
     public static function create (enemy : String, level : Dynamic, zones : Array<Int>) : Enemy
     {
         var level = Std.int (Math.random () * (level.max - level.min) + level.min);
@@ -63,6 +67,9 @@ class Enemy extends Sprite
 
     }
 
+    /**
+     * Stores the `gameStage` sprite that contains this Enemy instance
+     */
     public function setContainer (gameStage : GameStage) : Void
     {
         this.gameStage = gameStage;
@@ -74,17 +81,9 @@ class Enemy extends Sprite
      */
     public function move () : Void {}
 
-
-    public function inflictDamage () : Void
-    {
-
-    }
-
-    public function takeDamage (damage : Float) : Void
-    {
-
-    }
-
+    /**
+     * Notify listeners that enemy has died
+     */
     public function die () : Void
     {
         dispatchEvent (new EnemyEvent(EnemyEvent.DEAD, this));
@@ -119,6 +118,10 @@ class Enemy extends Sprite
         }
 
     }
+
+    public function takeDamage (e : Entity, d : Float) : Void {}
+
+    public function inflictDamage (e : Entity) : Void {}
 
 
 }

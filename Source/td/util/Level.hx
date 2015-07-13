@@ -9,6 +9,10 @@ import td.event.EnemyEvent;
 
 class Level extends EventDispatcher {
 
+    public static inline var BASE_DESTROYED : String = "base_destroyed";
+
+    public static inline var ENEMIES_DESTROYED : String = "enemies_destroyed";
+
     private static inline var LEVELS_PATH : String = "assets/levels.json";
 
     private var levelNumber : Int;
@@ -55,8 +59,16 @@ class Level extends EventDispatcher {
 
     private function sendEnemy (e:EnemyEvent)
     {
-        trace (e);
         gameStage.addEnemy (e.enemy);
+    }
+
+    public function enemiesRemaining () : Int
+    {
+        var s = 0;
+
+        for (round in rounds) s += round.enemiesRemaining();
+
+        return s;
     }
 
 }

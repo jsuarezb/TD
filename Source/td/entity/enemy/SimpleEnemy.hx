@@ -57,7 +57,7 @@ class SimpleEnemy extends Enemy
 
     override public function inflictDamage (e : Entity) : Void
     {
-        base.takeDamage (this, this.damage);
+        e.takeDamage (this, this.damage);
     }
 
 }

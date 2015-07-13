@@ -2,9 +2,10 @@ package td.event;
 
 import openfl.events.Event;
 
-class LevelEvent extends Event {
+class PlayerBaseEvent extends Event
+{
 
-    public static inline var END : String = "level_end";
+    public static inline var BASE_DESTROYED : String = "base_destroyed";
 
     public function new (label : String, bubbles : Bool = false, cancelable : Bool = false)
     {

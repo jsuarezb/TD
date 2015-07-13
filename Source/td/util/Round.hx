@@ -35,6 +35,11 @@ class Round extends EventDispatcher
         this.amount = amount;
     }
 
+    public function enemiesRemaining () : Int
+    {
+        return this.amount;
+    }
+
     public function tick () : Void
     {
         var time = Math.random () * (this.timeInterval.max - this.timeInterval.min) + this.timeInterval.min;
@@ -47,10 +52,16 @@ class Round extends EventDispatcher
 
     private function onTimer (e : TimerEvent) : Void
     {
+        if (amount == 0) {
+            timer.removeEventListener (TimerEvent.TIMER, onTimer);
+            return;
+        }
+
         var enemy = Enemy.create (this.enemy, this.level, this.zones);
         var event = new EnemyEvent (EnemyEvent.SENT, enemy);
 
         dispatchEvent (event);
+        amount--;
     }
 
 }

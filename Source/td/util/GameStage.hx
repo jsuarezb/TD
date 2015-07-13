@@ -61,10 +61,10 @@ class GameStage extends Sprite
      */
     public function startLevel () : Void
     {
+        this.base.addEventListener(PlayerBaseEvent.BASE_DESTROYED, onBaseDestroyed);
+
         level = new Level (levelNumber, this);
         level.start ();
-
-        level.addEventListener (LevelEvent.END, onLevelEnd);
     }
 
     public function addEnemy (enemy : Enemy) : Void
@@ -93,6 +93,21 @@ class GameStage extends Sprite
         return this.base;
     }
 
+    private function endLevel (endType : String) : Void
+    {
+        switch ( endType ) {
+            case Level.BASE_DESTROYED:
+                trace ("Base destroyed");
+
+            case Level.ENEMIES_DESTROYED:
+                trace ("Enemies destroyed");
+
+            default:
+                throw "Non existent level end";
+        }
+
+        for (i in )
+    }
 
     private function onAdded (e : Event) : Void
     {
@@ -103,17 +118,19 @@ class GameStage extends Sprite
 
     private function onEnter (e : Event) : Void
     {
+        /* REVIEW iterator() returns a new Iterator instance or a copy */
+        if (level.enemiesRemaining() == 0 && !enemies.iterator().hasNext()) {
+            endLevel (Level.ENEMIES_DESTROYED);
+        }
+
         for (e in enemies) {
             e.move ();
         }
     }
 
-    private function onLevelEnd (e : LevelEvent) : Void
+    private function onBaseDestroyed (e : PlayerBaseEvent) : Void
     {
-        level.removeEventListener(LevelEvent.END, onLevelEnd);
-
-        /* TODO */
+        endLevel (Level.BASE_DESTROYED);
     }
-
 
 }
