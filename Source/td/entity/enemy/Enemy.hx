@@ -3,6 +3,7 @@ package td.entity.enemy;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
+import td.event.EnemyEvent;
 import td.util.GameStage;
 
 class Enemy extends Sprite
@@ -36,15 +37,14 @@ class Enemy extends Sprite
 
     public var gameStage (null, default): GameStage;
 
+    public var index : Int;
+
     public function new (level : Dynamic, zones : Array<Int>)
     {
         super ();
 
         this.level = level;
         this.zones = zones;
-
-        this.graphics.beginFill (0x000000);
-        this.graphics.drawRect (0, 0, 10, 10);
 
         addEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
     }
@@ -85,6 +85,11 @@ class Enemy extends Sprite
 
     }
 
+    public function die () : Void
+    {
+        dispatchEvent (new EnemyEvent(EnemyEvent.DEAD, this));
+    }
+
     public function onAddedToStage (e:Event) : Void
     {
         removeEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
@@ -98,13 +103,19 @@ class Enemy extends Sprite
                 this.y = Math.random () * this.gameStage._height;
 
             case Enemy.TOP_STAGE:
+                this.x = Math.random () * this.gameStage._width;
+                this.y = -this.height;
 
             case Enemy.RIGHT_STAGE:
+                this.x = this.gameStage._width + this.width;
+                this.y = Math.random () * this.gameStage._height;
 
             case Enemy.BOTTOM_STAGE:
+                this.x = Math.random () * this.gameStage._width;
+                this.y = this.gameStage._height + this.height;
 
             default:
-
+                throw "Invalid zone";
         }
 
     }
