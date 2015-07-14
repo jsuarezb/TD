@@ -1,6 +1,6 @@
 package td.entity.enemy;
 
-class SimpleEnemy extends Enemy
+class SpiralEnemy extends Enemy
 {
 
     public static inline var BASE_HP : Int = 25;
@@ -15,14 +15,14 @@ class SimpleEnemy extends Enemy
 
     public static inline var BASE_VALUE : Int = 10;
 
-    private var radius : Int = 10;
+    private var radius : Int = 5;
 
     public function new (level : Int, zones : Array<Int>)
     {
         super (level, zones);
 
         this.graphics.beginFill(0x000000);
-        this.graphics.drawCircle(0, 0, this.radius / 2);
+        this.graphics.drawCircle(0, 0, this.radius);
 
         this.hp = SimpleEnemy.BASE_HP * level;
         this.damage = SimpleEnemy.BASE_DAMAGE * level;
@@ -35,8 +35,8 @@ class SimpleEnemy extends Enemy
     override public function move () : Void
     {
         var base = this.gameStage.getBase ();
-        var xdif = base.x - this.x;
-        var ydif = base.y - this.y;
+        var xdif = this.x - base.x;
+        var ydif = this.y - base.y;
         var dist = xdif * xdif + ydif * ydif;
 
         var speed = 1;
@@ -45,10 +45,12 @@ class SimpleEnemy extends Enemy
             inflictDamage (this.gameStage.getBase());
             die ();
         } else {
-            var angle = Math.atan2(ydif, xdif);
+            var angle = Math.atan2(ydif, xdif) + 0.01;
+            var angularSpeed = 0.01;
 
-            this.x += speed * Math.cos (angle);
-            this.y += speed * Math.sin (angle);
+            dist = Math.sqrt (dist);
+            this.x = base.x + (dist - speed) * Math.cos (angle);
+            this.y = base.y + (dist - speed) * Math.sin (angle);
         }
     }
 

@@ -6,7 +6,7 @@ interface Entity
     /**
      * Take damage `d` from entity `e`
      */
-    public function takeDamage (e : Entity, d : Float) : Void;
+    public function takeDamage (e : Attacker, d : Float) : Void;
 
     /**
      * Inflict damage on `e`

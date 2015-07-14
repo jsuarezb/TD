@@ -3,13 +3,15 @@ package td.entity.tower;
 import openfl.display.Sprite;
 
 import td.entity.Entity;
+import td.entity.Attacker;
+import td.entity.enemy.Enemy;
 import td.util.GameStage;
 
-class Tower extends Sprite implements Entity
+class Tower extends Sprite implements Attacker
 {
 
     // Tower types
-    public static inline var SIMPLE_TOWER : String = "simple_tower";
+    public static inline var BASIC_TOWER : String = "basic_tower";
 
     public static inline var SPLASH_TOWER : String = "splash_tower";
 
@@ -72,8 +74,14 @@ class Tower extends Sprite implements Entity
     {
         switch (tower)
         {
-            case Tower.SIMPLE_TOWER:
-                return new SimpleTower (level, kills);
+            case Tower.BASIC_TOWER:
+                return new BasicTower (level, kills);
+
+            case Tower.SPLASH_TOWER:
+                return new SplashTower (level, kills);
+
+            case Tower.SNIPER_TOWER:
+                return new SniperTower (level, kills);
 
             default:
                 return null;
@@ -83,13 +91,13 @@ class Tower extends Sprite implements Entity
 
     public function draw () : Void
     {
-        this.graphics.lineStyle(2, 0);
+        /*this.graphics.lineStyle(2, 0x92C8B7);
         this.graphics.drawRect(
             -Tower.WIDTH / 2,
             -Tower.HEIGHT / 2,
             Tower.WIDTH,
             Tower.HEIGHT
-        );
+        );*/
     }
 
     public function moveTo (x : Float, y : Float) : Void
@@ -127,6 +135,14 @@ class Tower extends Sprite implements Entity
         this.gameStage = gameStage;
     }
 
+    public function sqrDistanceTo (enemy : Enemy) : Float
+    {
+        var xdif = enemy.x - this.x;
+        var ydif = enemy.y - this.y;
+
+        return xdif * xdif + ydif * ydif;
+    }
+
     /**
      * Towers won't take damage
      */
@@ -136,5 +152,11 @@ class Tower extends Sprite implements Entity
     {
         e.takeDamage (this, this.damage);
     }
+
+    public function addKill () : Void
+    {
+        this.kills++;
+    }
+
 
 }

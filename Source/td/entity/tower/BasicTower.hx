@@ -7,14 +7,14 @@ import openfl.events.TimerEvent;
 import td.entity.enemy.Enemy;
 import td.util.*;
 
-class SimpleTower extends Tower
+class BasicTower extends Tower
 {
 
     public static inline var BASE_DAMAGE : Float = 10;
 
     public static inline var BASE_SPEED : Float = 0.5;
 
-    public static inline var BASE_RATE_OF_FIRE : Float = 50;
+    public static inline var BASE_RATE_OF_FIRE : Float = 750;
 
     public static inline var BASE_RANGE : Float = 100;
 
@@ -26,10 +26,10 @@ class SimpleTower extends Tower
     {
         super ();
 
-        this.damage = SimpleTower.BASE_DAMAGE + level * 0.2;
-        this.speed = SimpleTower.BASE_SPEED + level * 0.1;
-        this.range = SimpleTower.BASE_RANGE + level * 10;
-        this.rateOfFire = SimpleTower.BASE_RATE_OF_FIRE - level;
+        this.damage = BasicTower.BASE_DAMAGE + level * 0.2;
+        this.speed = BasicTower.BASE_SPEED + level * 0.1;
+        this.range = BasicTower.BASE_RANGE + level * 10;
+        this.rateOfFire = BasicTower.BASE_RATE_OF_FIRE - level * 20;
         this.kills = kills;
         this.level = level;
         this.lasers = new Array<Shape> ();
@@ -43,7 +43,7 @@ class SimpleTower extends Tower
     {
         super.draw ();
 
-        this.graphics.beginFill (0x000000);
+        this.graphics.beginFill (0xFFFFFF);
         this.graphics.drawCircle (0, 0, Tower.WIDTH / 2 - 1);
     }
 
@@ -81,7 +81,7 @@ class SimpleTower extends Tower
                 this.lasers.remove (l);
             }
 
-            l.alpha -= 0.01;
+            l.alpha -= 0.1;
         }
     }
 
@@ -95,16 +95,6 @@ class SimpleTower extends Tower
 
         this.gameStage.addChild (laser);
         this.lasers.push (laser);
-        trace ("laser added");
-    }
-
-
-    private function sqrDistanceTo (enemy : Enemy) : Float
-    {
-        var xdif = enemy.x - this.x;
-        var ydif = enemy.y - this.y;
-
-        return xdif * xdif + ydif * ydif;
     }
 
 }

@@ -7,7 +7,7 @@ import td.event.EnemyEvent;
 import td.util.GameStage;
 import td.entity.Entity;
 
-class Enemy extends Sprite implements Entity
+class Enemy extends Sprite implements Attacker
 {
 
     public static inline var LEFT_STAGE : Int = 0;
@@ -19,6 +19,8 @@ class Enemy extends Sprite implements Entity
     public static inline var BOTTOM_STAGE : Int = 3;
 
     public static inline var SIMPLE_ENEMY : String = "simple_enemy";
+
+    public static inline var SPIRAL_ENEMY : String = "spiral_enemy";
 
     public var level : Int;
 
@@ -60,6 +62,9 @@ class Enemy extends Sprite implements Entity
         switch ( enemy ) {
             case Enemy.SIMPLE_ENEMY:
                 return new SimpleEnemy (level, zones);
+
+            case Enemy.SPIRAL_ENEMY:
+                return new SpiralEnemy (level, zones);
 
             default:
                 return null;
@@ -119,14 +124,17 @@ class Enemy extends Sprite implements Entity
 
     }
 
-    public function takeDamage (e : Entity, d : Float) : Void {
+    public function takeDamage (attacker : Attacker, d : Float) : Void {
         this.hp -= d;
 
-        if (this.hp <= 0)
+        if (this.hp <= 0) {
+            attacker.addKill ();
             dispatchEvent (new EnemyEvent (EnemyEvent.DEAD, this));
+        }
     }
 
     public function inflictDamage (e : Entity) : Void {}
 
+    public function addKill () : Void {}
 
 }

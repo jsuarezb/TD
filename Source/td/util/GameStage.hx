@@ -1,8 +1,11 @@
 package td.util;
 
 import openfl.display.Sprite;
+import openfl.display.Shape;
 import openfl.events.Event;
 import openfl.geom.Point;
+import openfl.display.GradientType;
+import openfl.geom.Matrix;
 import haxe.ds.IntMap;
 
 import td.entity.tower.*;
@@ -40,6 +43,21 @@ class GameStage extends Sprite
 
         this._width = width;
         this._height = height;
+
+        var bg : Shape = new Shape ();
+        var mtx : Matrix = new Matrix ();
+        mtx.createGradientBox (this._width, this._height, Math.PI * 45 / 180, 0, 0);
+
+        bg.graphics.beginGradientFill (
+            GradientType.LINEAR,
+            [0xF24A87, 0xF8A248],
+            [1, 1],
+            [0, 255],
+            mtx
+        );
+        bg.graphics.drawRect (0, 0, this._width, this._height);
+        bg.graphics.endFill ();
+        addChild (bg);
 
         this.base = new PlayerBase ();
         this.base.x = this._width / 2;
@@ -112,10 +130,10 @@ class GameStage extends Sprite
     {
         switch ( endType ) {
             case Level.BASE_DESTROYED:
-                trace ("Base destroyed");
+            
 
             case Level.ENEMIES_DESTROYED:
-                trace ("Enemies destroyed");
+
 
             default:
                 throw "Non existent level end";
