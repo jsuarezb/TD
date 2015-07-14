@@ -42,7 +42,8 @@ class SplashTower extends Tower
         {
             super.draw ();
 
-            this.graphics.beginFill (0xFFFFFF);
+            this.graphics.lineStyle (1, 0x600000);
+            this.graphics.beginFill (0xFFA0A0);
             this.graphics.drawCircle (0, 0, Tower.WIDTH / 2 - 1);
         }
 

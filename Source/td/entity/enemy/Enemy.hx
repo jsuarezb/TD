@@ -129,7 +129,7 @@ class Enemy extends Sprite implements Attacker
 
         if (this.hp <= 0) {
             attacker.addKill ();
-            dispatchEvent (new EnemyEvent (EnemyEvent.DEAD, this));
+            die ();
         }
     }
 

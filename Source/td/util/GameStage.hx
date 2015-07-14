@@ -12,6 +12,7 @@ import td.entity.tower.*;
 import td.entity.enemy.*;
 import td.entity.PlayerBase;
 import td.event.*;
+import td.util.ParticlesContainer;
 
 class GameStage extends Sprite
 {
@@ -37,6 +38,8 @@ class GameStage extends Sprite
 
     private var levelNumber : Int;
 
+    private var particles : ParticlesContainer;
+
     public function new (width : Float, height : Float)
     {
         super ();
@@ -44,6 +47,21 @@ class GameStage extends Sprite
         this._width = width;
         this._height = height;
 
+        drawBackground ();
+        drawParticlesContainer ();
+
+        this.base = new PlayerBase ();
+        this.base.x = this._width / 2;
+        this.base.y = this._height / 2;
+
+        this.towers = new IntMap<Tower> ();
+        this.enemies = new IntMap<Enemy> ();
+
+        addEventListener (Event.ADDED_TO_STAGE, onAdded);
+    }
+
+    private function drawBackground () : Void
+    {
         var bg : Shape = new Shape ();
         var mtx : Matrix = new Matrix ();
         mtx.createGradientBox (this._width, this._height, Math.PI * 45 / 180, 0, 0);
@@ -58,15 +76,13 @@ class GameStage extends Sprite
         bg.graphics.drawRect (0, 0, this._width, this._height);
         bg.graphics.endFill ();
         addChild (bg);
+    }
 
-        this.base = new PlayerBase ();
-        this.base.x = this._width / 2;
-        this.base.y = this._height / 2;
+    private function drawParticlesContainer() : Void
+    {
+        particles = new ParticlesContainer (this._width, this._height);
 
-        this.towers = new IntMap<Tower> ();
-        this.enemies = new IntMap<Enemy> ();
-
-        addEventListener (Event.ADDED_TO_STAGE, onAdded);
+        addChild (particles);
     }
 
     public function setLevel (level : Int) : Void
@@ -106,19 +122,26 @@ class GameStage extends Sprite
         enemy.setGameStage (this);
         enemies.set (enemy.index, enemy);
 
-        enemy.addEventListener (EnemyEvent.DEAD, removeEnemy);
+        enemy.addEventListener (EnemyEvent.DEAD, onEnemyDead);
 
         addChild (enemy);
         enemyCounter++;
     }
 
-    private function removeEnemy (e : EnemyEvent) : Void
+    private function removeEnemy (enemy : Enemy) : Void
     {
-        var enemy = e.enemy;
-
         enemy.removeEventListener (EnemyEvent.DEAD, removeEnemy);
         enemies.remove (enemy.index);
         removeChild (enemy);
+    }
+
+    private function onEnemyDead (e : EnemyEvent) : Void
+    {
+        var enemy = e.enemy;
+
+        particles.addParticles (5, enemy.x, enemy.y, 10);
+
+        removeEnemy (enemy);
     }
 
     public function getBase () : PlayerBase
@@ -126,11 +149,16 @@ class GameStage extends Sprite
         return this.base;
     }
 
+    public function getParticles () : ParticlesContainer
+    {
+        return this.particles;
+    }
+
     private function endLevel (endType : String) : Void
     {
         switch ( endType ) {
             case Level.BASE_DESTROYED:
-            
+
 
             case Level.ENEMIES_DESTROYED:
 
@@ -164,6 +192,8 @@ class GameStage extends Sprite
         {
             e.move ();
         }
+
+        particles.update ();
     }
 
     private function onBaseDestroyed (e : PlayerBaseEvent) : Void

@@ -43,7 +43,8 @@ class BasicTower extends Tower
     {
         super.draw ();
 
-        this.graphics.beginFill (0xFFFFFF);
+        this.graphics.lineStyle (1, 0x606060);
+        this.graphics.beginFill (0xE0E0E0);
         this.graphics.drawCircle (0, 0, Tower.WIDTH / 2 - 1);
     }
 
