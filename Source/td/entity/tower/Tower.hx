@@ -1,6 +1,7 @@
 package td.entity.tower;
 
 import openfl.display.Sprite;
+import openfl.display.Shape;
 
 import td.entity.Entity;
 import td.entity.Attacker;
@@ -22,9 +23,7 @@ class Tower extends Sprite implements Attacker
     public static inline var POISON_TOWER : String = "poison_tower";
 
     // Tower dimensions
-    private static inline var WIDTH = 15;
-
-    private static inline var HEIGHT = 15;
+    private static inline var RADIUS = 7.5;
 
     // Serializable variables
     public var damage : Float;
@@ -42,6 +41,8 @@ class Tower extends Sprite implements Attacker
     // In-game variables
     public var isSelected : Bool = false;
 
+    public var isHighlighted : Bool = false;
+
     private var isMoving : Bool = false;
 
     private var xSpeed : Float = 0;
@@ -56,6 +57,10 @@ class Tower extends Sprite implements Attacker
 
     private var gameStage : GameStage;
 
+    private var highlight : Shape;
+
+    private var rangeIndicator : Shape;
+
 /*
     TODO
     var status:Array<TowerStatus>;
@@ -66,8 +71,6 @@ class Tower extends Sprite implements Attacker
     public function new ()
     {
         super ();
-
-        this.draw ();
     }
 
     public static function create (tower : String, level : Int, kills : Int) : Tower
@@ -91,23 +94,35 @@ class Tower extends Sprite implements Attacker
 
     public function draw () : Void
     {
-        /*this.graphics.lineStyle(2, 0x92C8B7);
-        this.graphics.drawRect(
-            -Tower.WIDTH / 2,
-            -Tower.HEIGHT / 2,
-            Tower.WIDTH,
-            Tower.HEIGHT
-        );*/
+        this.rangeIndicator = new Shape ();
+        this.rangeIndicator.alpha = 0;
+        this.rangeIndicator.graphics.beginFill (0x333333, .5);
+        this.rangeIndicator.graphics.drawCircle (0, 0, this.range);
+        this.rangeIndicator.graphics.endFill ();
+
+        this.highlight = new Shape ();
+        this.highlight.graphics.lineStyle (2, 0xFF0000, .5);
+        this.highlight.graphics.drawCircle (0, 0, Tower.RADIUS + 2);
+        this.highlight.alpha = 0;
     }
 
     public function moveTo (x : Float, y : Float) : Void
     {
-        if (!isSelected) return;
+        if (!this.isSelected) return;
 
         this.xNext = x;
         this.yNext = y;
         this.isMoving = true;
     }
+
+    public function update () : Void
+    {
+        this.move ();
+
+        this.highlight.alpha = (this.isHighlighted) ? 1 : 0;
+        this.rangeIndicator.alpha = (this.isSelected) ? 1 : 0;
+    }
+
 
     public function move () : Void
     {
@@ -128,11 +143,19 @@ class Tower extends Sprite implements Attacker
             this.x += Math.cos(angle) * this.speed;
             this.y += Math.sin(angle) * this.speed;
         }
+
+        this.highlight.x = this.rangeIndicator.x = this.x;
+        this.highlight.y = this.rangeIndicator.y = this.y;
     }
 
     public function setGameStage (gameStage : GameStage) : Void
     {
         this.gameStage = gameStage;
+
+        this.rangeIndicator.x = this.highlight.x = this.x;
+        this.rangeIndicator.y = this.highlight.y = this.y;
+        this.gameStage.addTowerEffect (this.rangeIndicator);
+        this.gameStage.addTowerEffect (this.highlight);
     }
 
     public function sqrDistanceTo (enemy : Enemy) : Float

@@ -15,14 +15,19 @@ class SimpleEnemy extends Enemy
 
     public static inline var BASE_VALUE : Int = 10;
 
-    private var radius : Int = 10;
+    private var radius : Int = 5;
 
     public function new (level : Int, zones : Array<Int>)
     {
         super (level, zones);
 
-        this.graphics.beginFill(0x000000);
-        this.graphics.drawCircle(0, 0, this.radius / 2);
+        this.graphics.beginFill (0x000000, .6);
+        this.graphics.drawCircle (0, 0, this.radius);
+        this.graphics.endFill ();
+
+        this.graphics.beginFill (0xC06060);
+        this.graphics.drawCircle (0, 0, this.radius / 2);
+        this.graphics.endFill ();
 
         this.hp = SimpleEnemy.BASE_HP * level;
         this.damage = SimpleEnemy.BASE_DAMAGE * level;

@@ -3,6 +3,7 @@ package td.util;
 import openfl.display.Sprite;
 import openfl.display.Bitmap;
 import openfl.display.BitmapData;
+import openfl.geom.ColorTransform;
 import haxe.ds.IntMap;
 
 class ParticlesContainer extends Sprite
@@ -20,6 +21,8 @@ class ParticlesContainer extends Sprite
 
     private var counter : Int = 0;
 
+    private var colorTransform : ColorTransform;
+
     public function new (width : Float, height : Float) : Void
     {
         super ();
@@ -27,20 +30,23 @@ class ParticlesContainer extends Sprite
         this._width = width;
         this._height = height;
 
-        containerData = new BitmapData (Std.int (this._width), Std.int (this._height), true, 0x00FFFFFF);
-        container = new Bitmap (containerData);
+        this.containerData = new BitmapData (Std.int (this._width), Std.int (this._height), true, 0x00FFFFFF);
+        this.container = new Bitmap (containerData);
         addChild (container);
 
-        particles = new IntMap<Particle> ();
+        this.colorTransform = new ColorTransform ();
+        this.colorTransform.alphaMultiplier = 0.995;
+
+        this.particles = new IntMap<Particle> ();
     }
 
     public function update () : Void
     {
         containerData.lock ();
 
-        for (p in particles) {
-            p.update ();
+        containerData.colorTransform (containerData.rect, colorTransform);
 
+        for (p in particles) {
             if (p.isStopped ())
             {
                 particles.remove (p.index);

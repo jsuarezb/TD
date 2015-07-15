@@ -10,7 +10,7 @@ import td.util.*;
 class BasicTower extends Tower
 {
 
-    public static inline var BASE_DAMAGE : Float = 10;
+    public static inline var BASE_DAMAGE : Float = 30;
 
     public static inline var BASE_SPEED : Float = 0.5;
 
@@ -28,8 +28,8 @@ class BasicTower extends Tower
 
         this.damage = BasicTower.BASE_DAMAGE + level * 0.2;
         this.speed = BasicTower.BASE_SPEED + level * 0.1;
-        this.range = BasicTower.BASE_RANGE + level * 10;
-        this.rateOfFire = BasicTower.BASE_RATE_OF_FIRE - level * 20;
+        this.range = BasicTower.BASE_RANGE + level * 5;
+        this.rateOfFire = BasicTower.BASE_RATE_OF_FIRE - level * 30;
         this.kills = kills;
         this.level = level;
         this.lasers = new Array<Shape> ();
@@ -37,15 +37,21 @@ class BasicTower extends Tower
         this.timer = new Timer (this.rateOfFire);
         this.timer.addEventListener (TimerEvent.TIMER, shoot);
         this.timer.start ();
+
+        draw ();
     }
 
     override public function draw () : Void
     {
         super.draw ();
 
-        this.graphics.lineStyle (1, 0x606060);
-        this.graphics.beginFill (0xE0E0E0);
-        this.graphics.drawCircle (0, 0, Tower.WIDTH / 2 - 1);
+        this.graphics.beginFill (0xFFFFFF);
+        this.graphics.drawCircle (0, 0, Tower.RADIUS);
+        this.graphics.endFill ();
+
+        this.graphics.beginFill (0xE06060);
+        this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
+        this.graphics.endFill ();
     }
 
     public function shoot (e : TimerEvent) : Void
@@ -71,9 +77,9 @@ class BasicTower extends Tower
         }
     }
 
-    override public function move () : Void
+    override public function update () : Void
     {
-        super.move ();
+        super.update ();
 
         for (l in lasers)
         {
@@ -90,7 +96,7 @@ class BasicTower extends Tower
     {
         var laser = new Shape ();
 
-        laser.graphics.lineStyle (1, 0xFF0000);
+        laser.graphics.lineStyle (1, 0xE0E0E0);
         laser.graphics.moveTo (this.x, this.y);
         laser.graphics.lineTo (enemy.x, enemy.y);
 

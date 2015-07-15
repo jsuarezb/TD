@@ -36,15 +36,21 @@ class SplashTower extends Tower
             this.timer = new Timer (this.rateOfFire);
             this.timer.addEventListener (TimerEvent.TIMER, shoot);
             this.timer.start ();
+
+            draw ();
         }
 
         override public function draw () : Void
         {
             super.draw ();
 
-            this.graphics.lineStyle (1, 0x600000);
-            this.graphics.beginFill (0xFFA0A0);
-            this.graphics.drawCircle (0, 0, Tower.WIDTH / 2 - 1);
+            this.graphics.beginFill (0xFFFFFF);
+            this.graphics.drawCircle (0, 0, Tower.RADIUS);
+            this.graphics.endFill ();
+
+            this.graphics.beginFill (0x744B8E);
+            this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
+            this.graphics.endFill ();
         }
 
         public function shoot (e : TimerEvent) : Void
@@ -69,9 +75,9 @@ class SplashTower extends Tower
             }
         }
 
-        override public function move () : Void
+        override public function update () : Void
         {
-            super.move ();
+            super.update ();
 
             for (s in splashes)
             {

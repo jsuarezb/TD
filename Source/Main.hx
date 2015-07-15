@@ -16,22 +16,30 @@ class Main extends Sprite
 		var gStage = new GameStage (600, 600);
 		this.stage.addChild (gStage);
 
-		var t = Tower.create (Tower.SNIPER_TOWER, 20, 0);
+		var t = Tower.create (Tower.BASIC_TOWER, 20, 0);
+		t.x = 400;
+		t.y = 300;
 		gStage.addTower (t);
-		t.isSelected = true;
-		t.moveTo (200, 200);
-
-		var t = Tower.create (Tower.SPLASH_TOWER, 20, 0);
-		gStage.addTower (t);
-		t.x = 500;
-		t.y = 200;
-		t.isSelected = true;
-		t.moveTo (400, 300);
 
 		var t = Tower.create (Tower.BASIC_TOWER, 20, 0);
-		gStage.addTower (t);
-		t.x = 200;
 		t.y = 300;
+		t.x = 200;
+		gStage.addTower (t);
+
+		var t = Tower.create (Tower.SNIPER_TOWER, 20, 0);
+		t.x = 300;
+		t.y = 300;
+		gStage.addTower (t);
+
+		var t = Tower.create (Tower.SPLASH_TOWER, 20, 0);
+		t.x = 300;
+		t.y = 200;
+		gStage.addTower (t);
+
+		var t = Tower.create (Tower.SPLASH_TOWER, 20, 0);
+		t.x = 300;
+		t.y = 400;
+		gStage.addTower (t);
 
 		gStage.setLevel (0);
 		gStage.startLevel ();

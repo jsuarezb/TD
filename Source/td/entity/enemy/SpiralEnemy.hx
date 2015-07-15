@@ -21,8 +21,13 @@ class SpiralEnemy extends Enemy
     {
         super (level, zones);
 
-        this.graphics.beginFill(0x000000);
-        this.graphics.drawCircle(0, 0, this.radius);
+        this.graphics.beginFill (0x000000, .6);
+        this.graphics.drawCircle (0, 0, this.radius);
+        this.graphics.endFill ();
+
+        this.graphics.beginFill (0x6060C0);
+        this.graphics.drawCircle (0, 0, this.radius / 2);
+        this.graphics.endFill ();
 
         this.hp = SimpleEnemy.BASE_HP * level;
         this.damage = SimpleEnemy.BASE_DAMAGE * level;
