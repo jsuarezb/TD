@@ -3,19 +3,12 @@
         "level": 1,
         "rounds": [
             {
-                "enemyType": "spiral_enemy",
-                "zones": [0, 1, 2, 3],
-                "amount": 500,
-                "level": {"min": 1, "max": 1},
-                "timer": {"min": 30, "max": 50}
-            },
-            {
+                "id": 0,
                 "enemyType": "simple_enemy",
-                "zones": [0, 1, 2, 3],
-                "amount": 750,
+                "zones": [0],
+                "amount": 10,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 50, "max": 75},
-                "dependencies": [0]
+                "timer": {"min": 1000, "max": 1500}
             }
         ]
     }

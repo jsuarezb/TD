@@ -7,16 +7,16 @@ import openfl.events.TimerEvent;
 import td.entity.enemy.Enemy;
 import td.util.*;
 
-class BasicTower extends Tower
+class BasicTower extends AttackTower
 {
-
-    public static inline var BASE_DAMAGE : Float = 30;
 
     public static inline var BASE_SPEED : Float = 0.5;
 
-    public static inline var BASE_RATE_OF_FIRE : Float = 750;
-
     public static inline var BASE_RANGE : Float = 100;
+
+    public static inline var BASE_DAMAGE : Float = 30;
+
+    public static inline var BASE_RATE_OF_FIRE : Float = 750;
 
     private var timer : Timer;
 
@@ -43,8 +43,6 @@ class BasicTower extends Tower
 
     override public function draw () : Void
     {
-        super.draw ();
-
         this.graphics.beginFill (0xFFFFFF);
         this.graphics.drawCircle (0, 0, Tower.RADIUS);
         this.graphics.endFill ();
@@ -52,6 +50,8 @@ class BasicTower extends Tower
         this.graphics.beginFill (0xE06060);
         this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
         this.graphics.endFill ();
+
+        super.draw ();
     }
 
     public function shoot (e : TimerEvent) : Void

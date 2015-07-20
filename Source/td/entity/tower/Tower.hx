@@ -8,7 +8,7 @@ import td.entity.Attacker;
 import td.entity.enemy.Enemy;
 import td.view.components.GameStage;
 
-class Tower extends Sprite implements Attacker
+class Tower extends Sprite implements Entity
 {
 
     // Tower types
@@ -22,19 +22,14 @@ class Tower extends Sprite implements Attacker
 
     public static inline var POISON_TOWER : String = "poison_tower";
 
+    public static inline var SATELLITE_TOWER : String = "satellite_tower";
+
     // Tower dimensions
     private static inline var RADIUS = 7.5;
 
-    // Serializable variables
-    public var damage : Float;
-
     public var speed : Float;
 
-    public var rateOfFire : Float;
-
     public var range : Float;
-
-    public var kills : Int;
 
     public var level : Int;
 
@@ -73,7 +68,7 @@ class Tower extends Sprite implements Attacker
         super ();
     }
 
-    public static function create (tower : String, level : Int, kills : Int) : Tower
+    public static function create (tower : String, level : Int, kills : Int = 0) : Tower
     {
         switch (tower)
         {
@@ -86,6 +81,9 @@ class Tower extends Sprite implements Attacker
             case Tower.SNIPER_TOWER:
                 return new SniperTower (level, kills);
 
+            case Tower.SATELLITE_TOWER:
+                return new SatelliteTower (level);
+
             default:
                 return null;
 
@@ -96,14 +94,14 @@ class Tower extends Sprite implements Attacker
     {
         this.rangeIndicator = new Shape ();
         this.rangeIndicator.alpha = 0;
-        this.rangeIndicator.graphics.beginFill (0x333333, .5);
+        this.rangeIndicator.graphics.beginFill (0x000000, .25);
         this.rangeIndicator.graphics.drawCircle (0, 0, this.range);
         this.rangeIndicator.graphics.endFill ();
 
         this.highlight = new Shape ();
-        this.highlight.graphics.lineStyle (2, 0xFF0000, .5);
-        this.highlight.graphics.drawCircle (0, 0, Tower.RADIUS + 2);
         this.highlight.alpha = 0;
+        this.highlight.graphics.lineStyle (2, 0x3366FF, .75);
+        this.highlight.graphics.drawCircle (0, 0, this.width / 2 + 1);
     }
 
     public function moveTo (x : Float, y : Float) : Void
@@ -170,16 +168,5 @@ class Tower extends Sprite implements Attacker
      * Towers won't take damage
      */
     public function takeDamage (e : Entity, d : Float) : Void {}
-
-    public function inflictDamage (e : Entity) : Void
-    {
-        e.takeDamage (this, this.damage);
-    }
-
-    public function addKill () : Void
-    {
-        this.kills++;
-    }
-
 
 }

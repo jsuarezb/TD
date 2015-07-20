@@ -8,9 +8,4 @@ interface Entity
      */
     public function takeDamage (e : Attacker, d : Float) : Void;
 
-    /**
-     * Inflict damage on `e`
-     */
-    public function inflictDamage (e : Entity) : Void;
-
 }

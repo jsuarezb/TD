@@ -6,7 +6,7 @@ import openfl.events.TimerEvent;
 
 import td.entity.enemy.Enemy;
 
-class SplashTower extends Tower
+class SplashTower extends AttackTower
 {
 
         public static inline var BASE_DAMAGE : Float = 10;
@@ -42,8 +42,6 @@ class SplashTower extends Tower
 
         override public function draw () : Void
         {
-            super.draw ();
-
             this.graphics.beginFill (0xFFFFFF);
             this.graphics.drawCircle (0, 0, Tower.RADIUS);
             this.graphics.endFill ();
@@ -51,6 +49,8 @@ class SplashTower extends Tower
             this.graphics.beginFill (0x744B8E);
             this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
             this.graphics.endFill ();
+
+            super.draw ();
         }
 
         public function shoot (e : TimerEvent) : Void

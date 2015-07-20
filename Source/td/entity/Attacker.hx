@@ -8,4 +8,9 @@ interface Attacker extends Entity
      */
     public function addKill () : Void;
 
+    /**
+     * Inflict damage on `e`
+     */
+    public function inflictDamage (e : Entity) : Void;
+
 }

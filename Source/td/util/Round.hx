@@ -44,8 +44,6 @@ class Round extends EventDispatcher
         this.timeInterval = timeInterval;
         this.amount = amount;
         this.dependencies = dependencies;
-
-        trace (dependencies);
     }
 
     public function enemiesRemaining () : Int
