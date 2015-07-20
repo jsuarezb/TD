@@ -1,11 +1,14 @@
 package td.util;
 
+import haxe.ds.IntMap;
+
 import openfl.Assets;
 import openfl.events.EventDispatcher;
 
 import td.entity.*;
 import td.view.components.GameStage;
 import td.event.EnemyEvent;
+import td.event.RoundEvent;
 
 class Level extends EventDispatcher {
 
@@ -21,6 +24,10 @@ class Level extends EventDispatcher {
 
     private var rounds : Array<Round>;
 
+    private var roundsEnded : IntMap <Round>;
+
+
+    /* TODO finish round dependencies */
     public function new (level : Int, gameStage : GameStage)
     {
         super ();
@@ -28,6 +35,7 @@ class Level extends EventDispatcher {
         this.levelNumber = level;
         this.gameStage = gameStage;
         this.rounds = new Array<Round> ();
+        this.roundsEnded = new IntMap<Round> ();
 
         this.loadRounds ();
     }
@@ -41,8 +49,18 @@ class Level extends EventDispatcher {
         var round : Round;
         for (data in rounds)
         {
-            round = new Round (data.enemyType, data.level, data.zones, data.timer, data.amount);
+            round = new Round (
+                data.id,
+                data.enemyType,
+                data.level,
+                data.zones,
+                data.timer,
+                data.amount,
+                data.dependencies
+            );
+
             round.addEventListener (EnemyEvent.SENT, sendEnemy);
+            round.addEventListener (RoundEvent.END, onRoundEnd);
 
             this.rounds.push (round);
         }
@@ -51,22 +69,49 @@ class Level extends EventDispatcher {
     public function start () : Void
     {
         for (round in this.rounds)
+            if (round.dependsOn () == null || round.dependsOn ().length == 0)
+                round.start ();
+
+    }
+
+    private function sendEnemy (e : EnemyEvent) : Void
+    {
+        gameStage.addEnemy (e.enemy);
+    }
+
+    private function onRoundEnd (e : RoundEvent) : Void
+    {
+        var round = e.round;
+        this.rounds.remove (round);
+        this.roundsEnded.set (round.getId (), round);
+
+        for (round in this.rounds)
         {
-            round.tick ();
-            round.addEventListener (EnemyEvent.SENT, sendEnemy);
+            if (canStart (round))
+                round.start ();
         }
     }
 
-    private function sendEnemy (e:EnemyEvent)
+    private function canStart (r : Round) : Bool
     {
-        gameStage.addEnemy (e.enemy);
+        if (r.dependsOn () == null || r.dependsOn ().length == 0)
+            return true;
+
+        for (dependency in r.dependsOn ())
+        {
+            if (!this.roundsEnded.exists (dependency))
+                return false;
+        }
+
+        return true;
     }
 
     public function enemiesRemaining () : Int
     {
         var s = 0;
 
-        for (round in rounds) s += round.enemiesRemaining();
+        for (round in rounds)
+            s += round.enemiesRemaining();
 
         return s;
     }

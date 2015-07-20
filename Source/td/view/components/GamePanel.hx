@@ -23,18 +23,18 @@ class GamePanel extends Sprite
         this.mouseEnabled = false;
 
         var txt = new GameTextField ();
-        txt.setAlignment (TextFormatAlign.CENTER);
+        txt.setAlignment (TextFormatAlign.LEFT);
         txt.setFontSize (20);
-        txt.width = GamePanel.PANEL_WIDTH;
-        txt.y = 5;
+        txt.x = txt.y = 5;
+        txt.width = GamePanel.PANEL_WIDTH - 10;
         txt.textColor = 0xFFFFFF;
         txt.text = "Level 0";
 
         score = new GameTextField ();
-        score.setAlignment (TextFormatAlign.LEFT);
+        score.setAlignment (TextFormatAlign.RIGHT);
         score.setFontSize (20);
         score.x = score.y = 5;
-        score.width = GamePanel.PANEL_WIDTH;
+        score.width = GamePanel.PANEL_WIDTH - 10;
         score.textColor = 0xFFFFFF;
 
         addChild (txt);
