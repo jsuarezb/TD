@@ -1,4 +1,4 @@
-package td.util;
+package td.view.components;
 
 import openfl.display.Sprite;
 import openfl.display.Shape;
@@ -14,7 +14,7 @@ import td.entity.tower.*;
 import td.entity.enemy.*;
 import td.entity.PlayerBase;
 import td.event.*;
-import td.util.ParticlesContainer;
+import td.util.*;
 
 class GameStage extends Sprite
 {
@@ -33,8 +33,6 @@ class GameStage extends Sprite
     private var towerSelected : Tower = null;
 
     private var base : PlayerBase;
-
-    private var grid : GameGrid;
 
     public var _width : Float;
 
@@ -81,7 +79,7 @@ class GameStage extends Sprite
     {
         var bg : Shape = new Shape ();
         var mtx : Matrix = new Matrix ();
-        mtx.createGradientBox (this._width, this._height, Math.PI * 45 / 180, 0, 0);
+        mtx.createGradientBox (this._width, this._height, Math.PI / 4, 0, 0);
 
         bg.graphics.beginGradientFill (
             GradientType.LINEAR,
@@ -209,7 +207,6 @@ class GameStage extends Sprite
         var enemy = e.enemy;
 
         particles.addParticles (25, enemy.x, enemy.y, 5);
-
         removeEnemy (enemy);
     }
 

@@ -4,6 +4,7 @@
 	<meta title="Td" package="com.sample.td" version="1.0.0" company="Company Name" />
 	<app main="Main" path="Export" file="Td" />
 
+	<window width="600" heigh="600"/>
 	<source path="Source" />
 
 	<haxelib name="openfl" />

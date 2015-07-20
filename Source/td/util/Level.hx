@@ -4,7 +4,7 @@ import openfl.Assets;
 import openfl.events.EventDispatcher;
 
 import td.entity.*;
-import td.util.*;
+import td.view.components.GameStage;
 import td.event.EnemyEvent;
 
 class Level extends EventDispatcher {

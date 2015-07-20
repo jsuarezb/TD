@@ -4,7 +4,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 
 import td.event.EnemyEvent;
-import td.util.GameStage;
+import td.view.components.GameStage;
 import td.entity.Entity;
 
 class Enemy extends Sprite implements Attacker
@@ -45,6 +45,8 @@ class Enemy extends Sprite implements Attacker
     public function new (level : Dynamic, zones : Array<Int>)
     {
         super ();
+
+        this.mouseEnabled = false;
 
         this.level = level;
         this.zones = zones;
@@ -132,6 +134,13 @@ class Enemy extends Sprite implements Attacker
             die ();
         }
     }
+
+    public function getScore () : Int
+    {
+        /* TODO specify value for every enemy based on level */
+        return 12;
+    }
+
 
     public function inflictDamage (e : Entity) : Void {}
 

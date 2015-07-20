@@ -6,7 +6,7 @@ import openfl.display.Shape;
 import td.entity.Entity;
 import td.entity.Attacker;
 import td.entity.enemy.Enemy;
-import td.util.GameStage;
+import td.view.components.GameStage;
 
 class Tower extends Sprite implements Attacker
 {
