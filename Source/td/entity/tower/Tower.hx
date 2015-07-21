@@ -38,23 +38,25 @@ class Tower extends Sprite implements Entity
 
     public var isHighlighted : Bool = false;
 
-    private var isMoving : Bool = false;
+    public var isMoving : Bool = false;
 
-    private var xSpeed : Float = 0;
+    public var xSpeed : Float = 0;
 
-    private var ySpeed : Float = 0;
+    public var ySpeed : Float = 0;
 
-    private var xNext : Float;
+    public var xNext : Float;
 
-    private var yNext : Float;
+    public var yNext : Float;
 
     public var index : Int;
 
     private var gameStage : GameStage;
 
-    private var highlight : Shape;
+    public var highlight : Shape;
 
-    private var rangeIndicator : Shape;
+    public var rangeIndicator : Shape;
+
+    public var chargeIndicator : Shape;
 
 /*
     TODO
@@ -66,6 +68,8 @@ class Tower extends Sprite implements Entity
     public function new ()
     {
         super ();
+
+        chargeIndicator = new Shape ();
     }
 
     public static function create (tower : String, level : Int, kills : Int = 0) : Tower
@@ -102,6 +106,14 @@ class Tower extends Sprite implements Entity
         this.highlight.alpha = 0;
         this.highlight.graphics.lineStyle (2, 0x3366FF, .75);
         this.highlight.graphics.drawCircle (0, 0, this.width / 2 + 1);
+
+        this.chargeIndicator = new Shape ();
+        this.chargeIndicator.alpha = 0;
+        this.chargeIndicator.graphics.beginFill (0x000000, .75);
+        this.chargeIndicator.graphics.drawCircle (0, 0, this.width / 2);
+        this.chargeIndicator.graphics.endFill ();
+
+        addChild (this.chargeIndicator);
     }
 
     public function moveTo (x : Float, y : Float) : Void
@@ -117,8 +129,22 @@ class Tower extends Sprite implements Entity
     {
         this.move ();
 
+        this.highlight.x = this.rangeIndicator.x = this.x;
+        this.highlight.y = this.rangeIndicator.y = this.y;
+
         this.highlight.alpha = (this.isHighlighted) ? 1 : 0;
         this.rangeIndicator.alpha = (this.isSelected) ? 1 : 0;
+
+        if (hasEnergy ())
+        {
+            if (this.chargeIndicator.alpha > 0)
+                this.chargeIndicator.alpha -= 0.05;
+        }
+        else
+        {
+            if (this.chargeIndicator.alpha < 1)
+                this.chargeIndicator.alpha += 0.05;
+        }
     }
 
 
@@ -130,20 +156,43 @@ class Tower extends Sprite implements Entity
         var yDif = this.yNext - this.y;
         var dist = Math.sqrt(yDif * yDif + xDif * xDif);
 
-        if (dist <= this.speed) {
+        if (dist <= this.speed)
+        {
             this.isMoving = false;
 
             this.x = this.xNext;
             this.y = this.yNext;
-        } else {
+        }
+        else
+        {
             var angle = Math.atan2(yDif, xDif);
 
-            this.x += Math.cos(angle) * this.speed;
-            this.y += Math.sin(angle) * this.speed;
-        }
+            var xSpeed = Math.cos (angle) * this.speed;
+            var ySpeed = Math.sin (angle) * this.speed;
+            var hasEnergy = gameStage.getSatellitesRange ().isPointInside (
+                this.x + xSpeed,
+                this.y + ySpeed,
+                this
+            );
 
-        this.highlight.x = this.rangeIndicator.x = this.x;
-        this.highlight.y = this.rangeIndicator.y = this.y;
+            if (hasEnergy)
+            {
+                this.x += xSpeed;
+                this.y += ySpeed;
+            }
+            else
+            {
+                this.isMoving = false;
+
+                this.xNext = this.x;
+                this.yNext = this.y;
+            }
+        }
+    }
+
+    public function getGameStage () : GameStage
+    {
+        return this.gameStage;
     }
 
     public function setGameStage (gameStage : GameStage) : Void
@@ -156,12 +205,26 @@ class Tower extends Sprite implements Entity
         this.gameStage.addTowerEffect (this.highlight);
     }
 
-    public function sqrDistanceTo (enemy : Enemy) : Float
+    public function sqrDistanceTo (entity : Sprite) : Float
     {
-        var xdif = enemy.x - this.x;
-        var ydif = enemy.y - this.y;
+        var xdif = entity.x - this.x;
+        var ydif = entity.y - this.y;
 
         return xdif * xdif + ydif * ydif;
+    }
+
+    public function isSatellite () : Bool
+    {
+        return false;
+    }
+
+    public function hasEnergy () : Bool
+    {
+        return gameStage.getSatellitesRange ().isPointInside (
+            this.x,
+            this.y,
+            this
+        );
     }
 
     /**

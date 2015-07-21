@@ -56,6 +56,9 @@ class BasicTower extends AttackTower
 
     public function shoot (e : TimerEvent) : Void
     {
+        if (!hasEnergy ())
+            return;
+            
         var enemies = this.gameStage.getEnemies ();
 
         var target : Enemy = null;

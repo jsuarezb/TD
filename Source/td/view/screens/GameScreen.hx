@@ -36,16 +36,6 @@ class GameScreen extends Sprite
 
     public function setUpGameStage () : Void
     {
-        var t = Tower.create (Tower.BASIC_TOWER, 20);
-		t.x = 400;
-		t.y = 300;
-		this.gStage.addTower (t);
-
-        var t = Tower.create (Tower.SATELLITE_TOWER, 1);
-        t.x = 500;
-        t.y = 300;
-        this.gStage.addTower (t);
-
 		this.gStage.setLevel (0);
 
         this.gStage.addEventListener(EnemyEvent.DEAD, onEnemyDead, true);

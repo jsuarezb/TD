@@ -33,4 +33,9 @@ class SatelliteTower extends Tower
         super.draw ();
     }
 
+    override public function isSatellite () : Bool
+    {
+        return true;
+    }
+
 }

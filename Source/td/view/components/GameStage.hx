@@ -5,6 +5,7 @@ import openfl.display.Shape;
 import openfl.display.DisplayObject;
 import openfl.events.Event;
 import openfl.events.MouseEvent;
+import openfl.events.KeyboardEvent;
 import openfl.geom.Point;
 import openfl.display.GradientType;
 import openfl.geom.Matrix;
@@ -12,7 +13,6 @@ import haxe.ds.IntMap;
 
 import td.entity.tower.*;
 import td.entity.enemy.*;
-import td.entity.PlayerBase;
 import td.event.*;
 import td.util.*;
 
@@ -29,6 +29,10 @@ class GameStage extends Sprite
     private var towers : IntMap<Tower>;
 
     private var enemies : IntMap<Enemy>;
+
+    private var satellitesRange : TowersRange;
+
+    private var satellites : Array<Tower>;
 
     private var towerSelected : Tower = null;
 
@@ -53,16 +57,20 @@ class GameStage extends Sprite
         this._width = width;
         this._height = height;
 
+        this.towers = new IntMap<Tower> ();
+        this.enemies = new IntMap<Enemy> ();
+        this.satellites = new Array<Tower> ();
+
         drawBackground ();
         drawParticlesContainer ();
         drawTowersEffects ();
 
-        this.base = new PlayerBase ();
+        this.base = new PlayerBase (1, 0);
+        addTower (this.base);
         this.base.x = this._width / 2;
         this.base.y = this._height / 2;
 
-        this.towers = new IntMap<Tower> ();
-        this.enemies = new IntMap<Enemy> ();
+        drawTowers ();
 
         addEventListener (Event.ADDED_TO_STAGE, onAdded);
     }
@@ -73,6 +81,17 @@ class GameStage extends Sprite
 
         addEventListener (Event.ENTER_FRAME, onEnter);
         addEventListener (MouseEvent.CLICK, onClick);
+        stage.addEventListener (KeyboardEvent.KEY_DOWN, onKeyDown);
+    }
+
+    public function getBase () : PlayerBase
+    {
+        return this.base;
+    }
+
+    public function getParticles () : ParticlesContainer
+    {
+        return this.particles;
     }
 
     private function drawBackground () : Void
@@ -107,6 +126,39 @@ class GameStage extends Sprite
         addChild (this.towersEffects);
     }
 
+    private function drawTowers () : Void
+    {
+        var t = Tower.create (Tower.BASIC_TOWER, 1);
+		t.x = 300;
+		t.y = 200;
+		addTower (t);
+
+        var t = Tower.create (Tower.BASIC_TOWER, 1);
+		t.x = 300;
+		t.y = 400;
+		addTower (t);
+
+        var t = Tower.create (Tower.SPLASH_TOWER, 1);
+		t.x = 200;
+		t.y = 400;
+		addTower (t);
+
+        var t = Tower.create (Tower.SNIPER_TOWER, 1);
+		t.x = 200;
+		t.y = 200;
+		addTower (t);
+
+        var t = Tower.create (Tower.SATELLITE_TOWER, 1);
+        t.x = 400;
+        t.y = 300;
+        addTower (t);
+
+        var t = Tower.create (Tower.SATELLITE_TOWER, 1);
+        t.x = 200;
+        t.y = 300;
+        addTower (t);
+    }
+
     public function addTowerEffect (d : DisplayObject) : Void
     {
         this.towersEffects.addChild (d);
@@ -134,6 +186,9 @@ class GameStage extends Sprite
         tower.setGameStage (this);
         towers.set (tower.index, tower);
 
+        if (tower.isSatellite ())
+            satellites.push (tower);
+
         addChild (tower);
         towerCounter++;
     }
@@ -152,7 +207,7 @@ class GameStage extends Sprite
             ydif = t.y - stage.mouseY;
 
             tDist = xdif * xdif + ydif * ydif;
-            if (tDist <= minDist)
+            if (tDist <= minDist && t.hasEnergy ())
             {
                 minDist = tDist;
                 tower = t;
@@ -174,8 +229,12 @@ class GameStage extends Sprite
 
     private function deselectTower () : Void
     {
+        if (towerSelected == null)
+            return;
+
         towerSelected.isHighlighted = false;
         towerSelected.isSelected = false;
+        this.towerSelected = null;
     }
 
     public function getEnemies () : IntMap<Enemy>
@@ -210,16 +269,6 @@ class GameStage extends Sprite
         removeEnemy (enemy);
     }
 
-    public function getBase () : PlayerBase
-    {
-        return this.base;
-    }
-
-    public function getParticles () : ParticlesContainer
-    {
-        return this.particles;
-    }
-
     private function endLevel (endType : String) : Void
     {
         switch ( endType ) {
@@ -238,9 +287,11 @@ class GameStage extends Sprite
     private function onEnter (e : Event) : Void
     {
         /* REVIEW iterator() returns a new Iterator instance or a copy */
-        if (level.enemiesRemaining() == 0 && !enemies.iterator().hasNext()) {
+        if (level.enemiesRemaining () == 0 && !enemies.iterator ().hasNext ()) {
             endLevel (Level.ENEMIES_DESTROYED);
         }
+
+        generateSatellitesRange ();
 
         for (t in towers)
         {
@@ -254,6 +305,17 @@ class GameStage extends Sprite
         }
 
         particles.update ();
+    }
+
+    private function generateSatellitesRange () : Void
+    {
+        satellitesRange = new TowersRange (this.base);
+        satellitesRange.addSatellites (satellites);
+    }
+
+    public function getSatellitesRange () : TowersRange
+    {
+        return this.satellitesRange;
     }
 
     private function onBaseDestroyed (e : PlayerBaseEvent) : Void
@@ -273,7 +335,7 @@ class GameStage extends Sprite
             ydif = stage.mouseY - this.y - t.y;
             currDist = xdif * xdif + ydif * ydif;
 
-            if (currDist < dist)
+            if (currDist < dist && t.hasEnergy ())
             {
                 tSelected = t;
                 dist = currDist;
@@ -282,6 +344,12 @@ class GameStage extends Sprite
 
         if (tSelected != null && tSelected != this.towerSelected) selectTower (tSelected);
         else this.towerSelected.moveTo (stage.mouseX - this.x, stage.mouseY - this.y);
+    }
+
+    private function onKeyDown (e : KeyboardEvent) : Void
+    {
+        if (e.keyCode == 27) // escape key
+            deselectTower ();
     }
 
 }
