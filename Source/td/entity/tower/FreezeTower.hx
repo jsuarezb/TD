@@ -5,15 +5,16 @@ import openfl.utils.Timer;
 import openfl.events.TimerEvent;
 
 import td.entity.enemy.Enemy;
+import td.util.effects.FreezeEffect;
 
-class SplashTower extends AttackTower
+class FreezeTower extends AttackTower
 {
 
         public static inline var BASE_DAMAGE : Float = 10;
 
         public static inline var BASE_SPEED : Float = 0.5;
 
-        public static inline var BASE_RATE_OF_FIRE : Float = 2000;
+        public static inline var BASE_RATE_OF_FIRE : Float = 5000;
 
         public static inline var BASE_RANGE : Float = 100;
 
@@ -46,7 +47,7 @@ class SplashTower extends AttackTower
             this.graphics.drawCircle (0, 0, Tower.RADIUS);
             this.graphics.endFill ();
 
-            this.graphics.beginFill (0xAA4B90);
+            this.graphics.beginFill (0x75B6FF);
             this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
             this.graphics.endFill ();
 
@@ -67,7 +68,7 @@ class SplashTower extends AttackTower
 
                 if (d <= this.range * this.range)
                 {
-                    inflictDamage (enemy);
+                    enemy.addEffect (new FreezeEffect (50, enemy));
                     hasAttacked = true;
                 }
             }
@@ -98,7 +99,7 @@ class SplashTower extends AttackTower
         {
             var splash = new Shape ();
 
-            splash.graphics.beginFill (0xFFFFFF);
+            splash.graphics.beginFill (0x75B6FF);
             splash.graphics.drawCircle (this.x, this.y, this.range);
             splash.alpha = 0.5;
 

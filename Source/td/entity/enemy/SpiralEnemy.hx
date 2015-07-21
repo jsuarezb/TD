@@ -35,6 +35,7 @@ class SpiralEnemy extends Enemy
         this.range = SimpleEnemy.BASE_RANGE * level;
         this.defense = SimpleEnemy.BASE_DEFENSE * level;
         this.value = SimpleEnemy.BASE_VALUE * level;
+        this.speed = 1;
     }
 
     override public function move () : Void
@@ -43,8 +44,6 @@ class SpiralEnemy extends Enemy
         var xdif = this.x - base.x;
         var ydif = this.y - base.y;
         var dist = xdif * xdif + ydif * ydif;
-
-        var speed = 1;
 
         if (dist < this.radius * this.radius) {
             inflictDamage (this.gameStage.getBase());

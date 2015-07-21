@@ -3,9 +3,12 @@ package td.entity.enemy;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
+import td.entity.Entity;
 import td.event.EnemyEvent;
 import td.view.components.GameStage;
-import td.entity.Entity;
+import td.util.effects.IEffect;
+import td.util.effects.EnemyEffect;
+import td.util.effects.EffectsCollection;
 
 class Enemy extends Sprite implements Attacker
 {
@@ -32,6 +35,8 @@ class Enemy extends Sprite implements Attacker
 
     public var rateOfFire : Float;
 
+    public var speed : Float;
+
     public var range : Float;
 
     public var defense : Float;
@@ -43,6 +48,8 @@ class Enemy extends Sprite implements Attacker
     public var gameStage (null, default): GameStage;
 
     public var index : Int;
+
+    public var effects : EffectsCollection = new EffectsCollection ();
 
     public function new (level : Dynamic, zones : Array<Int>)
     {
@@ -85,6 +92,18 @@ class Enemy extends Sprite implements Attacker
     public function setGameStage (gameStage : GameStage) : Void
     {
         this.gameStage = gameStage;
+    }
+
+    public function addEffect (e : EnemyEffect) : Void
+    {
+        this.effects.add (e);
+    }
+
+    public function update () : Void
+    {
+        this.effects.apply (EffectType.HP);
+
+        this.move ();
     }
 
     /**

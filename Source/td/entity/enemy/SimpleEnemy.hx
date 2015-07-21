@@ -1,5 +1,7 @@
 package td.entity.enemy;
 
+import td.util.effects.IEffect;
+
 class SimpleEnemy extends Enemy
 {
 
@@ -33,6 +35,7 @@ class SimpleEnemy extends Enemy
         this.damage = SimpleEnemy.BASE_DAMAGE * level;
         this.rateOfFire = SimpleEnemy.BASE_RATE_OF_FIRE * level;
         this.range = SimpleEnemy.BASE_RANGE * level;
+        this.speed = 1;
         this.defense = SimpleEnemy.BASE_DEFENSE * level;
         this.value = SimpleEnemy.BASE_VALUE * level;
     }
@@ -44,16 +47,15 @@ class SimpleEnemy extends Enemy
         var ydif = base.y - this.y;
         var dist = xdif * xdif + ydif * ydif;
 
-        var speed = 1;
-
         if (dist < this.radius * this.radius) {
             inflictDamage (this.gameStage.getBase());
             die ();
         } else {
             var angle = Math.atan2(ydif, xdif);
 
-            this.x += speed * Math.cos (angle);
-            this.y += speed * Math.sin (angle);
+            this.effects.apply (EffectType.SPEED);
+            this.x += this.speed * Math.cos (angle);
+            this.y += this.speed * Math.sin (angle);
         }
     }
 

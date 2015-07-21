@@ -128,7 +128,7 @@ class GameStage extends Sprite
 
     private function drawTowers () : Void
     {
-        var t = Tower.create (Tower.BASIC_TOWER, 1);
+        var t = Tower.create (Tower.SPLASH_TOWER, 1);
 		t.x = 300;
 		t.y = 200;
 		addTower (t);
@@ -145,6 +145,11 @@ class GameStage extends Sprite
 
         var t = Tower.create (Tower.SNIPER_TOWER, 1);
 		t.x = 200;
+		t.y = 200;
+		addTower (t);
+
+        var t = Tower.create (Tower.FREEZE_TOWER, 1);
+		t.x = 400;
 		t.y = 200;
 		addTower (t);
 
@@ -301,7 +306,7 @@ class GameStage extends Sprite
 
         for (e in enemies)
         {
-            e.move ();
+            e.update ();
         }
 
         particles.update ();

@@ -47,7 +47,7 @@ class BasicTower extends AttackTower
         this.graphics.drawCircle (0, 0, Tower.RADIUS);
         this.graphics.endFill ();
 
-        this.graphics.beginFill (0xE06060);
+        this.graphics.beginFill (0x909090);
         this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
         this.graphics.endFill ();
 
@@ -58,7 +58,7 @@ class BasicTower extends AttackTower
     {
         if (!hasEnergy ())
             return;
-            
+
         var enemies = this.gameStage.getEnemies ();
 
         var target : Enemy = null;

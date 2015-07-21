@@ -1,5 +1,7 @@
 package td.entity.enemy;
 
+import td.util.effects.IEffect;
+
 class DistanceEnemy extends Enemy
 {
 
@@ -20,8 +22,6 @@ class DistanceEnemy extends Enemy
     private static inline var WAIT_THRESHOLD : Int = 30;
 
     private var radius : Int = 5;
-
-    private var speed : Float = 0;
 
     private var friction : Float = 0.8;
 
@@ -49,6 +49,7 @@ class DistanceEnemy extends Enemy
         this.range = DistanceEnemy.BASE_RANGE * level;
         this.defense = DistanceEnemy.BASE_DEFENSE * level;
         this.value = DistanceEnemy.BASE_VALUE * level;
+        this.speed = 0.5;
     }
 
     override public function move () : Void
@@ -63,17 +64,19 @@ class DistanceEnemy extends Enemy
             if (waitCounter < WAIT_THRESHOLD)
             {
                 this.speed *= this.friction;
+                effects.apply (EffectType.SPEED);
                 waitCounter++;
             }
             else
             {
                 var angle = Math.atan2 (ydif, xdif);
-                this.speed += this.acceleration;
                 var firstDif = {
                     x: this.x - base.x,
                     y: this.y - base.y
                 };
 
+                this.speed += this.acceleration;
+                effects.apply (EffectType.SPEED);
                 this.x += speed * Math.cos (angle);
                 this.y += speed * Math.sin (angle);
 
@@ -95,11 +98,11 @@ class DistanceEnemy extends Enemy
         else
         {
             var angle = Math.atan2(ydif, xdif);
-            this.speed = 0.5;
 
             if (dist <= DISTANCE_THRESHOLD * DISTANCE_THRESHOLD)
                 waitReached = true;
 
+            effects.apply (EffectType.SPEED);
             this.x += speed * Math.cos (angle);
             this.y += speed * Math.sin (angle);
         }

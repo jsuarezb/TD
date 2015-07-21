@@ -46,7 +46,7 @@ class SniperTower extends AttackTower
             this.graphics.drawCircle (0, 0, Tower.RADIUS);
             this.graphics.endFill ();
 
-            this.graphics.beginFill (0x06E0E0);
+            this.graphics.beginFill (0xFF3030);
             this.graphics.drawCircle (0, 0, Tower.RADIUS / 2);
             this.graphics.endFill ();
 
@@ -57,7 +57,7 @@ class SniperTower extends AttackTower
         {
             if (!hasEnergy ())
                 return;
-                
+
             var enemies = this.gameStage.getEnemies ();
 
             var target : Enemy = null;
