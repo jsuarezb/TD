@@ -16,11 +16,9 @@ class Tower extends Sprite implements Entity
 
     public static inline var SPLASH_TOWER : String = "splash_tower";
 
-    public static inline var LASER_TOWER : String = "laser_tower";
-
     public static inline var SNIPER_TOWER : String = "sniper_tower";
 
-    public static inline var POISON_TOWER : String = "poison_tower";
+    public static inline var PLUS_TOWER : String = "plus_tower";
 
     public static inline var SATELLITE_TOWER : String = "satellite_tower";
 
@@ -84,6 +82,9 @@ class Tower extends Sprite implements Entity
 
             case Tower.SNIPER_TOWER:
                 return new SniperTower (level, kills);
+
+            case Tower.PLUS_TOWER:
+                return new PlusTower (level, kills);
 
             case Tower.SATELLITE_TOWER:
                 return new SatelliteTower (level);

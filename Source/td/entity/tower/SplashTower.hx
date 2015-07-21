@@ -55,6 +55,9 @@ class SplashTower extends AttackTower
 
         public function shoot (e : TimerEvent) : Void
         {
+            if (!hasEnergy ())
+                return;
+                
             var enemies = this.gameStage.getEnemies ();
             var hasAttacked = false;
 
