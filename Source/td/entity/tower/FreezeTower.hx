@@ -26,10 +26,10 @@ class FreezeTower extends AttackTower
         {
             super ();
 
-            this.damage = SplashTower.BASE_DAMAGE + level * 0.2;
-            this.speed = SplashTower.BASE_SPEED + level * 0.1;
-            this.range = SplashTower.BASE_RANGE + level * 2;
-            this.rateOfFire = SplashTower.BASE_RATE_OF_FIRE - level * 5;
+            this.damage = FreezeTower.BASE_DAMAGE + level * 0.2;
+            this.speed = FreezeTower.BASE_SPEED + level * 0.1;
+            this.range = FreezeTower.BASE_RANGE + level * 2;
+            this.rateOfFire = FreezeTower.BASE_RATE_OF_FIRE - level * 5;
             this.kills = kills;
             this.level = level;
             this.splashes = new Array<Shape> ();

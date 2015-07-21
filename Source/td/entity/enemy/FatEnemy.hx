@@ -2,10 +2,10 @@ package td.entity.enemy;
 
 import td.util.effects.IEffect;
 
-class SpiralEnemy extends Enemy
+class FatEnemy extends Enemy
 {
 
-    public static inline var BASE_HP : Int = 25;
+    public static inline var BASE_HP : Int = 100;
 
     public static inline var BASE_DAMAGE : Int = 10;
 
@@ -17,7 +17,7 @@ class SpiralEnemy extends Enemy
 
     public static inline var BASE_VALUE : Int = 10;
 
-    private var radius : Int = 5;
+    private var radius : Int = 10;
 
     public function new (level : Int, zones : Array<Int>)
     {
@@ -27,7 +27,7 @@ class SpiralEnemy extends Enemy
         this.graphics.drawCircle (0, 0, this.radius);
         this.graphics.endFill ();
 
-        this.graphics.beginFill (0x6060C0);
+        this.graphics.beginFill (0xb59a7e);
         this.graphics.drawCircle (0, 0, this.radius / 2);
         this.graphics.endFill ();
 
@@ -35,28 +35,27 @@ class SpiralEnemy extends Enemy
         this.damage = SimpleEnemy.BASE_DAMAGE * level;
         this.rateOfFire = SimpleEnemy.BASE_RATE_OF_FIRE * level;
         this.range = SimpleEnemy.BASE_RANGE * level;
+        this.speed = 1;
         this.defense = SimpleEnemy.BASE_DEFENSE * level;
         this.value = SimpleEnemy.BASE_VALUE * level;
-        this.speed = 1;
     }
 
     override public function move () : Void
     {
         var base = this.gameStage.getBase ();
-        var xdif = this.x - base.x;
-        var ydif = this.y - base.y;
+        var xdif = base.x - this.x;
+        var ydif = base.y - this.y;
         var dist = xdif * xdif + ydif * ydif;
 
         if (dist < this.radius * this.radius) {
             inflictDamage (this.gameStage.getBase());
             die ();
         } else {
-            this.effects.apply (EffectType.SPEED);
+            var angle = Math.atan2(ydif, xdif);
 
-            var angle = Math.atan2(ydif, xdif) + (speed / 100);
-            dist = Math.sqrt (dist);
-            this.x = base.x + (dist - speed) * Math.cos (angle);
-            this.y = base.y + (dist - speed) * Math.sin (angle);
+            this.effects.apply (EffectType.SPEED);
+            this.x += this.speed * Math.cos (angle);
+            this.y += this.speed * Math.sin (angle);
         }
     }
 

@@ -98,7 +98,7 @@ class SniperTower extends AttackTower
         {
             var laser = new Shape ();
 
-            laser.graphics.lineStyle (1, 0xFFFFFF);
+            laser.graphics.lineStyle (1, 0xFF3030);
             laser.graphics.moveTo (this.x, this.y);
             laser.graphics.lineTo (enemy.x, enemy.y);
 

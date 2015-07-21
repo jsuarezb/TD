@@ -22,6 +22,8 @@ class Tower extends Sprite implements Entity
 
     public static inline var FREEZE_TOWER : String = "freeze_tower";
 
+    public static inline var POISON_TOWER : String = "poison_tower";
+
     public static inline var SATELLITE_TOWER : String = "satellite_tower";
 
     // Tower dimensions
@@ -90,6 +92,9 @@ class Tower extends Sprite implements Entity
 
             case Tower.FREEZE_TOWER:
                 return new FreezeTower (level, kills);
+
+            case Tower.POISON_TOWER:
+                return new PoisonTower (level, kills);
 
             case Tower.SATELLITE_TOWER:
                 return new SatelliteTower (level);

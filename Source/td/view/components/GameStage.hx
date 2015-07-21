@@ -153,6 +153,11 @@ class GameStage extends Sprite
 		t.y = 200;
 		addTower (t);
 
+        var t = Tower.create (Tower.POISON_TOWER, 1);
+		t.x = 400;
+		t.y = 400;
+		addTower (t);
+
         var t = Tower.create (Tower.SATELLITE_TOWER, 1);
         t.x = 400;
         t.y = 300;
