@@ -20,8 +20,6 @@ class PoisonTower extends AttackTower
 
     private var poisonDamage : Float;
 
-    private var timer : Timer;
-
     private var lasers : Array<Shape>;
 
     public function new (level : Int, kills : Int)
@@ -56,7 +54,7 @@ class PoisonTower extends AttackTower
         super.draw ();
     }
 
-    public function shoot (e : TimerEvent) : Void
+    override public function shoot (e : TimerEvent) : Void
     {
         if (!hasEnergy ())
             return;

@@ -18,8 +18,6 @@ class BasicTower extends AttackTower
 
     public static inline var BASE_RATE_OF_FIRE : Float = 750;
 
-    private var timer : Timer;
-
     private var lasers : Array<Shape>;
 
     public function new (level : Int, kills : Int)
@@ -54,7 +52,7 @@ class BasicTower extends AttackTower
         super.draw ();
     }
 
-    public function shoot (e : TimerEvent) : Void
+    override public function shoot (e : TimerEvent) : Void
     {
         if (!hasEnergy ())
             return;

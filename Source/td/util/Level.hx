@@ -69,9 +69,8 @@ class Level extends EventDispatcher {
     public function start () : Void
     {
         for (round in this.rounds)
-            if (round.dependsOn () == null || round.dependsOn ().length == 0)
+            if (!round.isActive () && canStart (round))
                 round.start ();
-
     }
 
     private function sendEnemy (e : EnemyEvent) : Void
@@ -86,10 +85,8 @@ class Level extends EventDispatcher {
         this.roundsEnded.set (round.getId (), round);
 
         for (round in this.rounds)
-        {
-            if (canStart (round))
+            if (!round.isActive () && canStart (round))
                 round.start ();
-        }
     }
 
     private function canStart (r : Round) : Bool
@@ -98,10 +95,8 @@ class Level extends EventDispatcher {
             return true;
 
         for (dependency in r.dependsOn ())
-        {
             if (!this.roundsEnded.exists (dependency))
                 return false;
-        }
 
         return true;
     }
@@ -114,6 +109,18 @@ class Level extends EventDispatcher {
             s += round.enemiesRemaining();
 
         return s;
+    }
+
+    public function pause () : Void
+    {
+        for (r in rounds)
+            r.pause ();
+    }
+
+    public function resume () : Void
+    {
+        for (r in rounds)
+            r.resume ();
     }
 
 }

@@ -1,5 +1,7 @@
 package td.entity.tower;
 
+import openfl.utils.Timer;
+
 import openfl.display.Sprite;
 import openfl.display.CapsStyle;
 import openfl.display.JointStyle;
@@ -27,6 +29,8 @@ class PlayerBase extends AttackTower
         this.range = BasicTower.BASE_RANGE + level * 5;
         this.damage = BasicTower.BASE_DAMAGE + level * 0.2;
         this.rateOfFire = BasicTower.BASE_RATE_OF_FIRE - level * 30;
+
+        this.timer = new Timer (this.rateOfFire);
 
         draw ();
     }

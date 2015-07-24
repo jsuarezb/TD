@@ -52,6 +52,8 @@ class GameStage extends Sprite
 
     private var keyboard : Keyboard;
 
+    public var isPaused : Bool = false;
+
     public function new (width : Float, height : Float)
     {
         super ();
@@ -85,6 +87,8 @@ class GameStage extends Sprite
 
         addEventListener (Event.ENTER_FRAME, onEnter);
         addEventListener (MouseEvent.CLICK, onClick);
+
+        dispatchEvent (new GameEvent (GameEvent.RESUME));
     }
 
     public function getBase () : PlayerBase
@@ -101,6 +105,7 @@ class GameStage extends Sprite
     {
         keyboard = new Keyboard (stage);
         keyboard.onKeyPressed (Keyboard.ESC_KEY, deselectTower);
+        keyboard.onKeyPressed (Keyboard.P_KEY, togglePause);
     }
 
     public function setLevel (level : Int) : Void
@@ -321,8 +326,31 @@ class GameStage extends Sprite
             s.showRange ();
     }
 
+    private function togglePause () : Void
+    {
+        isPaused = !isPaused;
+
+        for (t in towers)
+        {
+            if (isPaused) t.pause ();
+            else t.resume ();
+        }
+
+        if (isPaused)
+            level.pause ();
+        else
+            level.resume ();
+        
+        var t = (isPaused ? GameEvent.PAUSE : GameEvent.RESUME);
+        dispatchEvent (new GameEvent (t));
+    }
+
     private function onEnter (e : Event) : Void
     {
+        /* TODO pause and resumed gameplay */
+        if (isPaused)
+            return;
+
         /* REVIEW iterator() returns a new Iterator instance or a copy */
         if (level.enemiesRemaining () == 0 && !enemies.iterator ().hasNext ())
             endLevel (Level.ENEMIES_DESTROYED);

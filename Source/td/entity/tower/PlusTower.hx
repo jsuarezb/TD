@@ -18,8 +18,6 @@ class PlusTower extends AttackTower
 
     public static inline var BASE_RATE_OF_FIRE : Float = 750;
 
-    private var timer : Timer;
-
     private var lasers : Array<Shape>;
 
     private var minWidth : Float;
@@ -81,7 +79,7 @@ class PlusTower extends AttackTower
         this.rangeIndicator.graphics.endFill ();
     }
 
-    public function shoot (e : TimerEvent) : Void
+    override public function shoot (e : TimerEvent) : Void
     {
         if (!hasEnergy ())
             return;

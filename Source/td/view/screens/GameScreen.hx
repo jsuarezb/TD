@@ -15,7 +15,7 @@ class GameScreen extends Sprite
 
     private var gStage : GameStage;
 
-    private var statsPanel : GamePanel;
+    private var hud : GamePanel;
 
     private var score : Int = 0;
 
@@ -23,28 +23,40 @@ class GameScreen extends Sprite
     {
         super ();
 
-        this.gStage = new GameStage (GameScreen.GAME_STAGE_WIDTH, GameScreen.GAME_STAGE_HEIGHT);
+        gStage = new GameStage (GameScreen.GAME_STAGE_WIDTH, GameScreen.GAME_STAGE_HEIGHT);
         setUpGameStage ();
 
-        addChild (this.gStage);
+        addChild (gStage);
 
-        this.statsPanel = new GamePanel ();
-        addChild (this.statsPanel);
+        hud = new GamePanel ();
+        addChild (hud);
 
 		gStage.startLevel ();
     }
 
     public function setUpGameStage () : Void
     {
-		this.gStage.setLevel (0);
+		gStage.setLevel (0);
 
-        this.gStage.addEventListener(EnemyEvent.DEAD, onEnemyDead, true);
+        gStage.addEventListener (EnemyEvent.DEAD, onEnemyDead, true);
+        gStage.addEventListener (GameEvent.PAUSE, onPause);
+        gStage.addEventListener (GameEvent.RESUME, onResume);
     }
 
     private function onEnemyDead (e : EnemyEvent) : Void
     {
-        this.score += e.enemy.getScore ();
-        this.statsPanel.updateScore (score);
+        score += e.enemy.getScore ();
+        hud.updateScore (score);
     }
 
+    public function onPause (e : GameEvent) : Void
+    {
+        hud.pause ();
+    }
+
+    public function onResume (e: GameEvent) : Void
+    {
+        hud.resume ();
+    }
+    
 }

@@ -46,11 +46,6 @@ class Round extends EventDispatcher
         this.dependencies = dependencies;
     }
 
-    public function enemiesRemaining () : Int
-    {
-        return this.amount;
-    }
-
     public function start () : Void
     {
         this.active = true;
@@ -65,6 +60,11 @@ class Round extends EventDispatcher
 
         this.timer.addEventListener (TimerEvent.TIMER, onTimer);
         this.timer.start ();
+    }
+
+    public function enemiesRemaining () : Int
+    {
+        return this.amount;
     }
 
     public function getId () : Int
@@ -82,6 +82,18 @@ class Round extends EventDispatcher
         return this.active;
     }
 
+    public function pause () : Void
+    {
+        if (timer != null && timer.running)
+            timer.stop ();
+    }
+
+    public function resume () : Void
+    {
+        if (timer != null)
+            timer.start ();
+    }
+
     private function onTimer (e : TimerEvent) : Void
     {
         if (amount == 0) {
@@ -94,8 +106,8 @@ class Round extends EventDispatcher
         var enemy = Enemy.create (this.enemy, this.level, this.zones);
         var event = new EnemyEvent (EnemyEvent.SENT, enemy);
 
-        dispatchEvent (event);
         amount--;
+        dispatchEvent (event);
     }
 
 }

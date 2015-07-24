@@ -259,6 +259,10 @@ class Tower extends Sprite implements Entity
         this.highlight.alpha = 0;
     }
 
+    public function pause () : Void {}
+
+    public function resume () : Void {}
+
     /**
      * Towers won't take damage
      */

@@ -15,6 +15,8 @@ class GamePanel extends Sprite
 
     private var score : GameTextField;
 
+    private var pausePanel : PausePanel;
+
     public function new ()
     {
         super ();
@@ -39,6 +41,11 @@ class GamePanel extends Sprite
 
         addChild (txt);
         addChild (score);
+
+        // Make sure to always add the pausePanel last so it covers everything
+        // on stage
+        pausePanel = new PausePanel ();
+        addChild (pausePanel);
     }
 
     public function updateScore (score : Int) : Void
@@ -46,5 +53,16 @@ class GamePanel extends Sprite
         this.score.text =  "Score: " + Std.string (score);
     }
 
+    public function pause () : Void
+    {
+        pausePanel.x = 0;
+        pausePanel.y = 0;
+    }
+
+    public function resume () : Void
+    {
+        pausePanel.x = stage.stageWidth;
+        pausePanel.y = stage.stageHeight;
+    }
 
 }

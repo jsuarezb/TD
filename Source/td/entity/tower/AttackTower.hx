@@ -1,5 +1,8 @@
 package td.entity.tower;
 
+import openfl.utils.Timer;
+import openfl.events.TimerEvent;
+
 import td.entity.Attacker;
 
 class AttackTower extends Tower implements Attacker
@@ -10,6 +13,8 @@ class AttackTower extends Tower implements Attacker
     public var rateOfFire : Float;
 
     public var kills : Int;
+
+    public var timer : Timer;
 
     public function new ()
     {
@@ -24,6 +29,18 @@ class AttackTower extends Tower implements Attacker
     public function addKill () : Void
     {
         this.kills++;
+    }
+
+    public function shoot (e : TimerEvent) : Void { }
+
+    override public function pause () : Void
+    {
+        timer.stop ();
+    }
+
+    override public function resume () : Void
+    {
+        timer.start ();
     }
 
 }

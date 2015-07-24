@@ -17,8 +17,6 @@ class SplashTower extends AttackTower
 
         public static inline var BASE_RANGE : Float = 100;
 
-        private var timer : Timer;
-
         private var splashes : Array<Shape>;
 
         public function new (level : Int, kills : Int)
@@ -53,7 +51,7 @@ class SplashTower extends AttackTower
             super.draw ();
         }
 
-        public function shoot (e : TimerEvent) : Void
+        override public function shoot (e : TimerEvent) : Void
         {
             if (!hasEnergy ())
                 return;

@@ -10,6 +10,8 @@ class Keyboard
 
     public static inline var ESC_KEY : Int = 27;
 
+    public static inline var P_KEY : Int = 80;
+
     public static inline var X_KEY : Int = 88;
 
     private static inline var BUFFER_SIZE : Int = 255;
