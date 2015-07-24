@@ -139,12 +139,14 @@ class Tower extends Sprite implements Entity
     public function update () : Void
     {
         this.move ();
+        this.hideRange ();
+        this.hideHighlight ();
 
         this.highlight.x = this.rangeIndicator.x = this.x;
         this.highlight.y = this.rangeIndicator.y = this.y;
 
-        this.highlight.alpha = (this.isHighlighted) ? 1 : 0;
-        this.rangeIndicator.alpha = (this.isSelected) ? 1 : 0;
+        if (this.isHighlighted) this.showHighlight ();
+        if (this.isSelected) this.showRange ();
 
         if (hasEnergy ())
         {
@@ -157,7 +159,6 @@ class Tower extends Sprite implements Entity
                 this.chargeIndicator.alpha += 0.05;
         }
     }
-
 
     public function move () : Void
     {
@@ -236,6 +237,26 @@ class Tower extends Sprite implements Entity
             this.y,
             this
         );
+    }
+
+    public function showRange () : Void
+    {
+        this.rangeIndicator.alpha = 1;
+    }
+
+    public function hideRange () : Void
+    {
+        this.rangeIndicator.alpha = 0;
+    }
+
+    public function showHighlight () : Void
+    {
+        this.highlight.alpha = 1;
+    }
+
+    public function hideHighlight () : Void
+    {
+        this.highlight.alpha = 0;
     }
 
     /**
