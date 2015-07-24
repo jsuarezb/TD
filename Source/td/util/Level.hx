@@ -40,6 +40,10 @@ class Level extends EventDispatcher {
         this.loadRounds ();
     }
 
+    /**
+     * Load every round corresponding to this level from the levels
+     * file stored in /Assets/
+     */
     public function loadRounds () : Void
     {
         var json = Assets.getText (LEVELS_PATH);
@@ -66,6 +70,9 @@ class Level extends EventDispatcher {
         }
     }
 
+    /**
+     * Start the level
+     */
     public function start () : Void
     {
         for (round in this.rounds)
@@ -73,11 +80,17 @@ class Level extends EventDispatcher {
                 round.start ();
     }
 
+    /**
+     * Callback to be called when a round needs to send an enemy
+     */
     private function sendEnemy (e : EnemyEvent) : Void
     {
         gameStage.addEnemy (e.enemy);
     }
 
+    /**
+     * Callback to be called when a round ends
+     */
     private function onRoundEnd (e : RoundEvent) : Void
     {
         var round = e.round;
@@ -89,6 +102,10 @@ class Level extends EventDispatcher {
                 round.start ();
     }
 
+    /**
+     * Decide wether or not a round can be started
+     * @param r round
+     */
     private function canStart (r : Round) : Bool
     {
         if (r.dependsOn () == null || r.dependsOn ().length == 0)
@@ -101,6 +118,10 @@ class Level extends EventDispatcher {
         return true;
     }
 
+    /**
+     * Return the enemies remaining
+     * @return  level's enemies remaining
+     */
     public function enemiesRemaining () : Int
     {
         var s = 0;
@@ -111,16 +132,35 @@ class Level extends EventDispatcher {
         return s;
     }
 
+    /**
+     * Pause the rounds, preventing spawning enemies or ending
+     */
     public function pause () : Void
     {
         for (r in rounds)
             r.pause ();
     }
 
+    /**
+     * Resume the rounds, allowing spawning enemies or ending
+     */
     public function resume () : Void
     {
         for (r in rounds)
             r.resume ();
+    }
+
+    /**
+     * Destroys all the listeners
+     */
+    public function destroy () : Void
+    {
+        for (r in rounds)
+        {
+            r.destroy ();
+            r.addEventListener (EnemyEvent.SENT, sendEnemy);
+            r.addEventListener (RoundEvent.END, onRoundEnd);
+        }
     }
 
 }

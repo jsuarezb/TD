@@ -66,7 +66,7 @@ class Enemy extends Sprite implements Attacker
         this.level = level;
         this.zones = zones;
 
-        addEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
+        addEventListener (Event.ADDED_TO_STAGE, onAdded);
     }
 
     /**
@@ -132,9 +132,9 @@ class Enemy extends Sprite implements Attacker
         dispatchEvent (new EnemyEvent(EnemyEvent.DEAD, this));
     }
 
-    public function onAddedToStage (e : Event) : Void
+    public function onAdded (e : Event) : Void
     {
-        removeEventListener (Event.ADDED_TO_STAGE, onAddedToStage);
+        removeEventListener (Event.ADDED_TO_STAGE, onAdded);
 
         var l = zones.length;
         var i = Std.int (Math.random () * l);
@@ -186,5 +186,7 @@ class Enemy extends Sprite implements Attacker
     public function getParticles () : Int {
         return BASE_PARTICLES;
     }
+
+    public function destroy () : Void {}
 
 }

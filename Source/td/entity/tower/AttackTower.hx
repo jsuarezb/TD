@@ -43,4 +43,9 @@ class AttackTower extends Tower implements Attacker
         timer.start ();
     }
 
+    override public function destroy () : Void
+    {
+        timer.removeEventListener (TimerEvent.TIMER, shoot);
+    }
+
 }

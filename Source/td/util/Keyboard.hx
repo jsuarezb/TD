@@ -16,11 +16,26 @@ class Keyboard
 
     private static inline var BUFFER_SIZE : Int = 255;
 
+    private static var instance : Keyboard;
+
     private var stage : Stage;
 
     private var keys : Vector<Bool>;
 
     private var callbacks : IntMap<Void -> Void>;
+
+    /**
+     * Singleton instance method
+     * @param   stage   stage to add keyboard event listeners
+     * @return  the instance of the keyboard
+     */
+    public static function getInstance (stage : Stage) : Keyboard
+    {
+        if (instance == null)
+            instance = new Keyboard (stage);
+
+        return instance;
+    }
 
     /**
      * Keyboard instance constructor
@@ -36,15 +51,6 @@ class Keyboard
 
         this.stage.addEventListener (KeyboardEvent.KEY_DOWN, onKeyDown);
         this.stage.addEventListener (KeyboardEvent.KEY_UP, onKeyUp);
-    }
-
-    /**
-     * Destroy the listeners and allows gc to remove the object from memory
-     */
-    public function destroy () : Void
-    {
-        stage.removeEventListener (KeyboardEvent.KEY_DOWN, onKeyDown);
-        stage.removeEventListener (KeyboardEvent.KEY_UP, onKeyUp);
     }
 
     /**
@@ -68,6 +74,14 @@ class Keyboard
             return;
 
         callbacks.set (keyCode, callback);
+    }
+
+    /**
+     * Clear callbacks related to each key
+     */
+    public function clearKeysPressed () : Void
+    {
+        callbacks = new IntMap<Void -> Void> ();
     }
 
     /**
@@ -98,5 +112,4 @@ class Keyboard
 
         keys[e.keyCode] = false;
     }
-
 }

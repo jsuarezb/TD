@@ -181,7 +181,7 @@ class Tower extends Sprite implements Entity
 
             var xSpeed = Math.cos (angle) * this.speed;
             var ySpeed = Math.sin (angle) * this.speed;
-            var hasEnergy = gameStage.getSatellitesRange ().isPointInside (
+            var hasEnergy = gameStage.getEnergyRange ().isPointInside (
                 this.x + xSpeed,
                 this.y + ySpeed,
                 this
@@ -232,7 +232,7 @@ class Tower extends Sprite implements Entity
 
     public function hasEnergy () : Bool
     {
-        return gameStage.getSatellitesRange ().isPointInside (
+        return gameStage.getEnergyRange ().isPointInside (
             this.x,
             this.y,
             this
@@ -267,5 +267,7 @@ class Tower extends Sprite implements Entity
      * Towers won't take damage
      */
     public function takeDamage (e : Entity, d : Float) : Void {}
+
+    public function destroy () : Void {}
 
 }

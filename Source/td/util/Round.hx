@@ -110,4 +110,10 @@ class Round extends EventDispatcher
         dispatchEvent (event);
     }
 
+    public function destroy () : Void
+    {
+        if (timer != null)
+            timer.removeEventListener (TimerEvent.TIMER, onTimer);
+    }
+
 }
