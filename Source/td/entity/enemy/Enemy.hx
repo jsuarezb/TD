@@ -29,6 +29,8 @@ class Enemy extends Sprite implements Attacker
 
     public static inline var FAT_ENEMY : String = "fat_enemy";
 
+    public static inline var GROWER_ENEMY : String = "grower_enemy";
+
     public var level : Int;
 
     public var hp : Float;
@@ -84,6 +86,9 @@ class Enemy extends Sprite implements Attacker
 
             case Enemy.FAT_ENEMY:
                 return new FatEnemy (level, zones);
+
+            case Enemy.GROWER_ENEMY:
+                return new GrowerEnemy (level, zones);
 
             default:
                 return null;
