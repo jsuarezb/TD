@@ -31,6 +31,8 @@ class Enemy extends Sprite implements Attacker
 
     public static inline var GROWER_ENEMY : String = "grower_enemy";
 
+    private static inline var BASE_PARTICLES : Int = 5;
+
     public var level : Int;
 
     public var hp : Float;
@@ -179,5 +181,10 @@ class Enemy extends Sprite implements Attacker
     public function inflictDamage (e : Entity) : Void {}
 
     public function addKill () : Void {}
+
+    // To override
+    public function getParticles () : Int {
+        return BASE_PARTICLES;
+    }
 
 }

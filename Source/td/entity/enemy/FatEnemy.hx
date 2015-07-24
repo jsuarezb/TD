@@ -17,6 +17,8 @@ class FatEnemy extends Enemy
 
     public static inline var BASE_VALUE : Int = 10;
 
+    private static inline var PARTICLES : Int = 3;
+
     private var radius : Int = 10;
 
     public function new (level : Int, zones : Array<Int>)
@@ -62,6 +64,11 @@ class FatEnemy extends Enemy
     override public function inflictDamage (e : Entity) : Void
     {
         e.takeDamage (this, this.damage);
+    }
+
+    override public function getParticles () : Int
+    {
+        return Std.int (super.getParticles () + FatEnemy.PARTICLES * this.level / 2);
     }
 
 }

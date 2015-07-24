@@ -142,42 +142,42 @@ class GameStage extends Sprite
 
     private function drawTowers () : Void
     {
-        var t = Tower.create (Tower.SPLASH_TOWER, 1);
+        var t = Tower.create (Tower.SPLASH_TOWER, 20);
 		t.x = 300;
 		t.y = 200;
 		addTower (t);
 
-        var t = Tower.create (Tower.BASIC_TOWER, 1);
+        var t = Tower.create (Tower.BASIC_TOWER, 20);
 		t.x = 300;
 		t.y = 400;
 		addTower (t);
 
-        var t = Tower.create (Tower.PLUS_TOWER, 1);
+        var t = Tower.create (Tower.PLUS_TOWER, 20);
 		t.x = 200;
 		t.y = 400;
 		addTower (t);
 
-        var t = Tower.create (Tower.SNIPER_TOWER, 1);
+        var t = Tower.create (Tower.SNIPER_TOWER, 20);
 		t.x = 200;
 		t.y = 200;
 		addTower (t);
 
-        var t = Tower.create (Tower.FREEZE_TOWER, 1);
+        var t = Tower.create (Tower.FREEZE_TOWER, 20);
 		t.x = 400;
 		t.y = 200;
 		addTower (t);
 
-        var t = Tower.create (Tower.POISON_TOWER, 1);
+        var t = Tower.create (Tower.POISON_TOWER, 20);
 		t.x = 400;
 		t.y = 400;
 		addTower (t);
 
-        var t = Tower.create (Tower.SATELLITE_TOWER, 1);
+        var t = Tower.create (Tower.SATELLITE_TOWER, 20);
         t.x = 400;
         t.y = 300;
         addTower (t);
 
-        var t = Tower.create (Tower.SATELLITE_TOWER, 1);
+        var t = Tower.create (Tower.SATELLITE_TOWER, 20);
         t.x = 200;
         t.y = 300;
         addTower (t);
@@ -284,7 +284,7 @@ class GameStage extends Sprite
     {
         var enemy = e.enemy;
 
-        particles.addParticles (25, enemy.x, enemy.y, 5);
+        particles.addParticles (enemy.getParticles (), enemy.x, enemy.y, 5);
         removeEnemy (enemy);
     }
 

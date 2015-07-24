@@ -25,6 +25,8 @@ class GrowerEnemy extends Enemy
 
     private static inline var HEALTH_CONSTANT : Int = 30;
 
+    private static inline var PARTICLES : Int = 2;
+
     private var radius : Float;
 
     private var hpRegen : Float;
@@ -84,6 +86,11 @@ class GrowerEnemy extends Enemy
     override public function inflictDamage (e : Entity) : Void
     {
         e.takeDamage (this, this.damage);
+    }
+
+    override public function getParticles () : Int
+    {
+        return Std.int (super.getParticles () + GrowerEnemy.PARTICLES * this.level / 2);
     }
 
 }

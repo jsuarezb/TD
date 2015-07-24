@@ -17,6 +17,8 @@ class SpiralEnemy extends Enemy
 
     public static inline var BASE_VALUE : Int = 10;
 
+    private static inline var PARTICLES : Int = 2;
+
     private var radius : Int = 5;
 
     public function new (level : Int, zones : Array<Int>)
@@ -63,6 +65,11 @@ class SpiralEnemy extends Enemy
     override public function inflictDamage (e : Entity) : Void
     {
         e.takeDamage (this, this.damage);
+    }
+
+    override public function getParticles () : Int
+    {
+        return Std.int (super.getParticles () + SpiralEnemy.PARTICLES * this.level / 2);
     }
 
 }

@@ -17,6 +17,8 @@ class SimpleEnemy extends Enemy
 
     public static inline var BASE_VALUE : Int = 10;
 
+    private static inline var PARTICLES : Int = 1;
+
     private var radius : Int = 5;
 
     public function new (level : Int, zones : Array<Int>)
@@ -47,10 +49,13 @@ class SimpleEnemy extends Enemy
         var ydif = base.y - this.y;
         var dist = xdif * xdif + ydif * ydif;
 
-        if (dist < this.radius * this.radius) {
+        if (dist < this.radius * this.radius)
+        {
             inflictDamage (this.gameStage.getBase());
             die ();
-        } else {
+        }
+        else
+        {
             var angle = Math.atan2(ydif, xdif);
 
             this.effects.apply (EffectType.SPEED);
@@ -62,6 +67,11 @@ class SimpleEnemy extends Enemy
     override public function inflictDamage (e : Entity) : Void
     {
         e.takeDamage (this, this.damage);
+    }
+
+    override public function getParticles () : Int
+    {
+        return Std.int (super.getParticles () + SimpleEnemy.PARTICLES * this.level / 2);
     }
 
 }

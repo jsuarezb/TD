@@ -21,6 +21,8 @@ class DistanceEnemy extends Enemy
 
     private static inline var WAIT_THRESHOLD : Int = 30;
 
+    private static inline var PARTICLES : Int = 2;
+
     private var radius : Int = 5;
 
     private var friction : Float = 0.8;
@@ -111,6 +113,11 @@ class DistanceEnemy extends Enemy
     override public function inflictDamage (e : Entity) : Void
     {
         e.takeDamage (this, this.damage);
+    }
+
+    override public function getParticles () : Int
+    {
+        return Std.int (super.getParticles () + DistanceEnemy.PARTICLES * this.level / 2);
     }
 
 }
