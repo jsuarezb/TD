@@ -105,6 +105,15 @@ class Tower extends Sprite implements Entity
         }
     }
 
+    /**
+     * Return the display name of the tower
+     * @return tower's display name
+     */
+    public function getName () : String { return null; }
+
+    /**
+     * Draw the tower and its components
+     */
     public function draw () : Void
     {
         this.rangeIndicator = new Shape ();
@@ -127,6 +136,11 @@ class Tower extends Sprite implements Entity
         addChild (this.chargeIndicator);
     }
 
+    /**
+     * Move the tower to the specified coordinates
+     * @param   x   x coordinate
+     * @param   y   y coordinate
+     */
     public function moveTo (x : Float, y : Float) : Void
     {
         if (!this.isSelected) return;
@@ -136,6 +150,9 @@ class Tower extends Sprite implements Entity
         this.isMoving = true;
     }
 
+    /**
+     * Update function applied every frame
+     */
     public function update () : Void
     {
         this.move ();
@@ -160,6 +177,9 @@ class Tower extends Sprite implements Entity
         }
     }
 
+    /**
+     * Tower movement
+     */
     public function move () : Void
     {
         if (!this.isMoving) return;
@@ -202,11 +222,19 @@ class Tower extends Sprite implements Entity
         }
     }
 
+    /**
+     * Return the game stage
+     * @return tower's game stage
+     */
     public function getGameStage () : GameStage
     {
         return this.gameStage;
     }
 
+    /**
+     * Associate a game stage with the tower
+     * @param   gameStage   game stage
+     */
     public function setGameStage (gameStage : GameStage) : Void
     {
         this.gameStage = gameStage;
@@ -217,6 +245,11 @@ class Tower extends Sprite implements Entity
         this.gameStage.addTowerEffect (this.highlight);
     }
 
+    /**
+     * Calculate the distance between tower and an entity
+     * @param   entity  sprite to calculate distance to
+     * @return  distance between tower and specified entity
+     */
     public function sqrDistanceTo (entity : Sprite) : Float
     {
         var xdif = entity.x - this.x;
@@ -225,11 +258,19 @@ class Tower extends Sprite implements Entity
         return xdif * xdif + ydif * ydif;
     }
 
+    /**
+     * Check whether the tower is an energy satellite
+     * @return  true if tower is a satellite, false if not
+     */
     public function isSatellite () : Bool
     {
         return false;
     }
 
+    /**
+     * Check if the tower is powered
+     * @return true if tower has energy, false if not
+     */
     public function hasEnergy () : Bool
     {
         return gameStage.getEnergyRange ().isPointInside (
@@ -239,35 +280,54 @@ class Tower extends Sprite implements Entity
         );
     }
 
+    /**
+     * Show the range of the tower on game stage
+     */
     public function showRange () : Void
     {
         this.rangeIndicator.alpha = 1;
     }
 
+    /**
+     * Hide the range of the tower on game stage
+     */
     public function hideRange () : Void
     {
         this.rangeIndicator.alpha = 0;
     }
 
+    /**
+     * Show tower selection highlight around the tower
+     */
     public function showHighlight () : Void
     {
         this.highlight.alpha = 1;
     }
 
+    /**
+     * Hide tower selection highlight around the tower
+     */
     public function hideHighlight () : Void
     {
         this.highlight.alpha = 0;
     }
 
+    /**
+     * Pause tower shooting
+     */
     public function pause () : Void {}
 
+    /**
+     * Resume tower shooting
+     */
     public function resume () : Void {}
 
-    /**
-     * Towers won't take damage
-     */
+    // Towers won't take damage
     public function takeDamage (e : Entity, d : Float) : Void {}
 
+    /**
+     * Destroy tower listeners
+     */
     public function destroy () : Void {}
 
 }

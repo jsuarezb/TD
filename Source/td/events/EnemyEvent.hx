@@ -1,4 +1,4 @@
-package td.event;
+package td.events;
 
 import openfl.events.Event;
 

@@ -10,6 +10,8 @@ import td.util.effects.PoisonEffect;
 class PoisonTower extends AttackTower
 {
 
+    private static inline var NAME : String = "Poison";
+
     public static inline var BASE_SPEED : Float = 0.5;
 
     public static inline var BASE_RANGE : Float = 100;
@@ -93,6 +95,11 @@ class PoisonTower extends AttackTower
 
             l.alpha -= 0.1;
         }
+    }
+
+    override public function getName () : String
+    {
+        return NAME;
     }
 
     private function drawLaser (enemy : Enemy) : Void

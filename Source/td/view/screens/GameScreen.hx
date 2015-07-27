@@ -5,14 +5,10 @@ import openfl.events.Event;
 
 import td.entity.tower.*;
 import td.view.components.*;
-import td.event.*;
+import td.events.*;
 
-class GameScreen extends Sprite
+class GameScreen extends Screen
 {
-
-    private static inline var GAME_STAGE_WIDTH : Int = 600;
-
-    private static inline var GAME_STAGE_HEIGHT : Int = 600;
 
     private var gStage : GameStage;
 
@@ -24,7 +20,7 @@ class GameScreen extends Sprite
     {
         super ();
 
-        gStage = new GameStage (GameScreen.GAME_STAGE_WIDTH, GameScreen.GAME_STAGE_HEIGHT);
+        gStage = new GameStage (Screen.WIDTH, Screen.HEIGHT);
         hud = new GamePanel ();
 
         setUpGameStage ();
@@ -35,15 +31,15 @@ class GameScreen extends Sprite
     }
 
     /**
-     * Set all the variables and listeners into the game stage
+     * Set all the listeners into the game stage
      */
     public function setUpGameStage () : Void
     {
-		gStage.setLevel (0);
-
         gStage.addEventListener (EnemyEvent.DEAD, onEnemyDead, true);
         gStage.addEventListener (GameEvent.PAUSE, onPause);
         gStage.addEventListener (GameEvent.RESUME, onResume);
+        gStage.addEventListener (TowerEvent.HIGHLIGHT, onTowerHighlighted);
+        gStage.addEventListener (TowerEvent.UNHIGHLIGHT, onTowerUnhighlighted);
     }
 
     /**
@@ -54,14 +50,10 @@ class GameScreen extends Sprite
     {
         removeEventListener (Event.ADDED_TO_STAGE, onAdded);
 
-		gStage.startLevel ();
+		gStage.startLevel (0);
 
         stage.addEventListener (Event.DEACTIVATE, function (e : Event) {
             gStage.pause ();
-        });
-
-        stage.addEventListener (Event.ACTIVATE, function (e : Event) {
-            gStage.resume ();
         });
     }
 
@@ -73,6 +65,16 @@ class GameScreen extends Sprite
     {
         score += e.enemy.getScore ();
         hud.updateScore (score);
+    }
+
+    private function onTowerHighlighted (e : TowerEvent) : Void
+    {
+        hud.showTowerDetails (e.tower);
+    }
+
+    private function onTowerUnhighlighted (e : TowerEvent) : Void
+    {
+        hud.hideTowerDetails ();
     }
 
     /**

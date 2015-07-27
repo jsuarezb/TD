@@ -10,6 +10,8 @@ import td.util.*;
 class BasicTower extends AttackTower
 {
 
+    private static inline var TOWER_NAME : String = "Basic";
+
     public static inline var BASE_SPEED : Float = 0.5;
 
     public static inline var BASE_RANGE : Float = 100;
@@ -91,6 +93,11 @@ class BasicTower extends AttackTower
 
             l.alpha -= 0.1;
         }
+    }
+
+    override public function getName () : String
+    {
+        return TOWER_NAME;
     }
 
     private function drawLaser (enemy : Enemy) : Void

@@ -3,6 +3,8 @@ package td.entity.tower;
 class SatelliteTower extends Tower
 {
 
+    private static inline var NAME : String = "Satellite";
+
     public static inline var BASE_SPEED : Float = 2;
 
     public static inline var BASE_RANGE : Float = 150;
@@ -36,6 +38,11 @@ class SatelliteTower extends Tower
     override public function isSatellite () : Bool
     {
         return true;
+    }
+
+    override public function getName () : String
+    {
+        return NAME;
     }
 
 }

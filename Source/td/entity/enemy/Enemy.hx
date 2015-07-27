@@ -4,7 +4,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 
 import td.entity.Entity;
-import td.event.EnemyEvent;
+import td.events.EnemyEvent;
 import td.view.components.GameStage;
 import td.util.effects.IEffect;
 import td.util.effects.EnemyEffect;

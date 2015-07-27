@@ -7,7 +7,7 @@ import td.entity.tower.*;
 class EnergyRange
 {
 
-    private var base : PlayerBase;
+    private var base : Base;
 
     private var satellites : Array<Tower>;
 
@@ -17,7 +17,7 @@ class EnergyRange
      * EnergyRange constructor
      * @param   base    base of the energy
      */
-    public function new (base : PlayerBase)
+    public function new (base : Base)
     {
         this.base = base;
         this.satellites = new Array<Tower> ();
@@ -25,6 +25,10 @@ class EnergyRange
         this.satellitesWithEnergy = new Array<Tower> ();
     }
 
+    /**
+     * Add a satellite
+     * @param   tower   satellite tower
+     */
     public function push (tower : Tower) : Void
     {
         satellites.push (tower);

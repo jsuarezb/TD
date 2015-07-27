@@ -13,11 +13,11 @@ class Main extends Sprite
 	{
 		super ();
 
-		var gScreen = new GameScreen ();
-		this.stage.addChild (gScreen);
+		var screens = new ScreenContainer (new MainMenuScreen ());
+		stage.addChild (screens);
 
 		var fps:FPS = new FPS(10, 560, 0xFFFFFF);
-		this.stage.addChild(fps);
+		stage.addChild(fps);
 	}
 
 }

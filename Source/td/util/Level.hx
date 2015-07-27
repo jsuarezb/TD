@@ -7,8 +7,8 @@ import openfl.events.EventDispatcher;
 
 import td.entity.*;
 import td.view.components.GameStage;
-import td.event.EnemyEvent;
-import td.event.RoundEvent;
+import td.events.EnemyEvent;
+import td.events.RoundEvent;
 
 class Level extends EventDispatcher {
 
@@ -26,8 +26,6 @@ class Level extends EventDispatcher {
 
     private var roundsEnded : IntMap <Round>;
 
-
-    /* TODO finish round dependencies */
     public function new (level : Int, gameStage : GameStage)
     {
         super ();

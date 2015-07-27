@@ -13,7 +13,7 @@ import haxe.ds.IntMap;
 
 import td.entity.tower.*;
 import td.entity.enemy.*;
-import td.event.*;
+import td.events.*;
 import td.util.*;
 
 class GameStage extends Sprite
@@ -25,16 +25,17 @@ class GameStage extends Sprite
 
     private var enemyCounter : Int = 0;
 
-    /* TODO implement a hash for towers and enemies */
     private var towers : IntMap<Tower>;
 
     private var enemies : IntMap<Enemy>;
 
-    private var energyRange : EnergyRange;
-
     private var towerSelected : Tower = null;
 
-    private var base : PlayerBase;
+    private var energyRange : EnergyRange;
+
+    private var base : Base;
+
+    public var isPaused : Bool = false;
 
     public var _width : Float;
 
@@ -42,15 +43,11 @@ class GameStage extends Sprite
 
     private var level:Level;
 
-    private var levelNumber : Int;
-
     private var particles : ParticlesContainer;
 
     private var towersEffects : Sprite;
 
     private var keyboard : Keyboard;
-
-    public var isPaused : Bool = false;
 
     public function new (width : Float, height : Float)
     {
@@ -66,7 +63,7 @@ class GameStage extends Sprite
         drawParticlesContainer ();
         drawTowersEffects ();
 
-        this.base = new PlayerBase (1, 0);
+        this.base = new Base (1, 0);
         this.base.x = this._width / 2;
         this.base.y = this._height / 2;
         this.energyRange = new EnergyRange (this.base);
@@ -89,7 +86,7 @@ class GameStage extends Sprite
         dispatchEvent (new GameEvent (GameEvent.RESUME));
     }
 
-    public function getBase () : PlayerBase
+    public function getBase () : Base
     {
         return base;
     }
@@ -104,11 +101,6 @@ class GameStage extends Sprite
         keyboard = Keyboard.getInstance (stage);
         keyboard.onKeyPressed (Keyboard.ESC_KEY, deselectTower);
         keyboard.onKeyPressed (Keyboard.P_KEY, togglePause);
-    }
-
-    public function setLevel (level : Int) : Void
-    {
-        levelNumber = level;
     }
 
     private function drawBackground () : Void
@@ -145,45 +137,16 @@ class GameStage extends Sprite
 
     private function drawTowers () : Void
     {
-        var t = Tower.create (Tower.SPLASH_TOWER, 20);
-		t.x = 300;
-		t.y = 200;
-		addTower (t);
-
-        var t = Tower.create (Tower.BASIC_TOWER, 20);
-		t.x = 300;
-		t.y = 400;
-		addTower (t);
-
-        var t = Tower.create (Tower.PLUS_TOWER, 20);
-		t.x = 200;
-		t.y = 400;
-		addTower (t);
-
-        var t = Tower.create (Tower.SNIPER_TOWER, 20);
-		t.x = 200;
-		t.y = 200;
-		addTower (t);
-
-        var t = Tower.create (Tower.FREEZE_TOWER, 20);
-		t.x = 400;
-		t.y = 200;
-		addTower (t);
-
-        var t = Tower.create (Tower.POISON_TOWER, 20);
-		t.x = 400;
-		t.y = 400;
-		addTower (t);
-
-        var t = Tower.create (Tower.SATELLITE_TOWER, 20);
-        t.x = 400;
-        t.y = 300;
-        addTower (t);
-
-        var t = Tower.create (Tower.SATELLITE_TOWER, 20);
-        t.x = 200;
-        t.y = 300;
-        addTower (t);
+        for (i in 0...360)
+        {
+            if (i % 20 == 0)
+            {
+                var t = Tower.create (Tower.BASIC_TOWER, Std.int (Math.random () * 19 + 1));
+                t.x = 300 + 30 * Math.cos (i * Math.PI / 180);
+                t.y = 300 + 30 * Math.sin (i * Math.PI / 180);
+                addTower (t);
+            }
+        }
     }
 
     public function addTowerEffect (d : DisplayObject) : Void
@@ -194,12 +157,12 @@ class GameStage extends Sprite
     /**
      * Start to send enemies
      */
-    public function startLevel () : Void
+    public function startLevel (level : Int) : Void
     {
-        base.addEventListener (PlayerBaseEvent.BASE_DESTROYED, onBaseDestroyed);
+        base.addEventListener (TowerEvent.BASE_DESTROYED, onBaseDestroyed);
 
-        level = new Level (levelNumber, this);
-        level.start ();
+        this.level = new Level (level, this);
+        this.level.start ();
     }
 
     /**
@@ -224,6 +187,11 @@ class GameStage extends Sprite
      */
     private function highlightTower () : Void
     {
+        if (towerSelected != null)
+            return;
+
+        dispatchEvent (new TowerEvent (TowerEvent.UNHIGHLIGHT, null));
+
         var xdif, ydif, tDist, tower = null;
         var minDist = GameStage.MIN_SELECT_RANGE * GameStage.MIN_SELECT_RANGE;
 
@@ -244,7 +212,10 @@ class GameStage extends Sprite
         }
 
         if (tower != null)
+        {
             tower.isHighlighted = true;
+            dispatchEvent (new TowerEvent (TowerEvent.HIGHLIGHT, tower));
+        }
     }
 
     /**
@@ -253,9 +224,6 @@ class GameStage extends Sprite
      */
     private function selectTower (t : Tower) : Void
     {
-        if (towerSelected != null)
-            deselectTower ();
-
         t.isSelected = true;
         towerSelected = t;
     }
@@ -327,28 +295,6 @@ class GameStage extends Sprite
     }
 
     /**
-     * Decide what how to end the level, based on endType
-     * @param   endType type of end of level. The values are:
-     *                  Level.BASE_DESTROYED when the base has been destroyed.
-     *                  Level.ENEMIES_DESTROYED when every enemy of the level
-     *                  has been killed.
-     */
-    private function endLevel (endType : String) : Void
-    {
-        switch ( endType ) {
-            case Level.BASE_DESTROYED:
-                destroy ();
-
-            case Level.ENEMIES_DESTROYED:
-                destroy ();
-
-            default:
-                throw "Non existent level end";
-        }
-
-    }
-
-    /**
      * Pause every object on stage
      */
     public function pause () : Void
@@ -393,9 +339,10 @@ class GameStage extends Sprite
         if (isPaused)
             return;
 
-        /* REVIEW iterator() returns a new Iterator instance or a copy */
+        /* TODO
         if (level.enemiesRemaining () == 0 && !enemies.iterator ().hasNext ())
             endLevel (Level.ENEMIES_DESTROYED);
+        */
 
         energyRange.generate ();
 
@@ -411,9 +358,9 @@ class GameStage extends Sprite
         particles.update ();
     }
 
-    private function onBaseDestroyed (e : PlayerBaseEvent) : Void
+    private function onBaseDestroyed (e : TowerEvent) : Void
     {
-        endLevel (Level.BASE_DESTROYED);
+        /* TODO */
     }
 
     /**
@@ -422,6 +369,8 @@ class GameStage extends Sprite
      */
     private function onClick (e : MouseEvent) : Void
     {
+        if (isPaused) return;
+
         var xdif, ydif, currDist;
         var dist = GameStage.MIN_SELECT_RANGE * GameStage.MIN_SELECT_RANGE;
         var tSelected : Tower = null;
@@ -439,7 +388,7 @@ class GameStage extends Sprite
             }
         }
 
-        if (tSelected != null && tSelected != this.towerSelected) selectTower (tSelected);
+        if (tSelected != null && towerSelected == null) selectTower (tSelected);
         else this.towerSelected.moveTo (stage.mouseX - this.x, stage.mouseY - this.y);
     }
 
@@ -452,7 +401,7 @@ class GameStage extends Sprite
         removeEventListener (MouseEvent.CLICK, onClick);
 
         level.destroy ();
-        base.removeEventListener (PlayerBaseEvent.BASE_DESTROYED, onBaseDestroyed);
+        base.removeEventListener (TowerEvent.BASE_DESTROYED, onBaseDestroyed);
         for (t in towers)
             t.destroy ();
 

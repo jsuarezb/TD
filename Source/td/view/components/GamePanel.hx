@@ -4,6 +4,8 @@ import openfl.display.Sprite;
 import openfl.display.Shape;
 import openfl.text.TextFormatAlign;
 
+import td.entity.tower.Tower;
+
 class GamePanel extends Sprite
 {
 
@@ -14,6 +16,8 @@ class GamePanel extends Sprite
     private var level : GameTextField;
 
     private var score : GameTextField;
+
+    private var towerDetails : TowerDetailsPanel;
 
     private var pausePanel : PausePanel;
 
@@ -42,6 +46,12 @@ class GamePanel extends Sprite
         addChild (txt);
         addChild (score);
 
+        towerDetails = new TowerDetailsPanel ();
+        towerDetails.x = 0;
+        towerDetails.y = 560;
+        towerDetails.hide ();
+        addChild (towerDetails);
+
         // Make sure to always add the pausePanel last so it covers everything
         // on stage
         pausePanel = new PausePanel ();
@@ -63,6 +73,16 @@ class GamePanel extends Sprite
     {
         pausePanel.x = stage.stageWidth;
         pausePanel.y = stage.stageHeight;
+    }
+
+    public function showTowerDetails (tower : Tower) : Void
+    {
+        towerDetails.show (tower);
+    }
+
+    public function hideTowerDetails () : Void
+    {
+        towerDetails.hide ();
     }
 
 }

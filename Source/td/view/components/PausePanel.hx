@@ -3,6 +3,8 @@ package td.view.components;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
+import td.view.components.GameTextField;
+
 class PausePanel extends Sprite
 {
 
@@ -20,6 +22,14 @@ class PausePanel extends Sprite
         this.graphics.beginFill (0xDCB099, 0.4);
         this.graphics.drawRect (0, 0, stage.stageWidth, stage.stageHeight);
         this.graphics.endFill ();
+
+        var pauseTxt = new GameTextField ();
+        pauseTxt.setFontSize (24);
+        pauseTxt.text = "Pause";
+        pauseTxt.textColor = 0xFFC89A;
+        pauseTxt.x = (stage.stageWidth - pauseTxt.textWidth) / 2;
+        pauseTxt.y = 200;
+        addChild (pauseTxt);
     }
 
 }

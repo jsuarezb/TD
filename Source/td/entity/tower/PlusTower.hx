@@ -10,6 +10,8 @@ import td.util.*;
 class PlusTower extends AttackTower
 {
 
+    private static inline var NAME : String = "Plus";
+
     public static inline var BASE_SPEED : Float = 0.5;
 
     public static inline var BASE_RANGE : Float = 200;
@@ -39,7 +41,7 @@ class PlusTower extends AttackTower
         this.kills = kills;
         this.level = level;
         this.minWidth = this.minHeight = 20;
-        this.maxWidth = this.maxHeight = 100;
+        this.maxWidth = this.maxHeight = 200;
         this.lasers = new Array<Shape> ();
 
         this.timer = new Timer (this.rateOfFire);
@@ -114,6 +116,11 @@ class PlusTower extends AttackTower
 
             l.alpha -= 0.1;
         }
+    }
+
+    override public function getName () : String
+    {
+        return NAME;
     }
 
     private function drawLaser (enemy : Enemy) : Void

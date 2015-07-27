@@ -8,10 +8,12 @@ import openfl.display.JointStyle;
 import openfl.display.LineScaleMode;
 import openfl.display.Shape;
 
-import td.event.PlayerBaseEvent;
+import td.events.TowerEvent;
 
-class PlayerBase extends AttackTower
+class Base extends AttackTower
 {
+
+    private static inline var NAME : String = "Base";
 
     private static inline var SIZE : Int = 10;
 
@@ -37,7 +39,7 @@ class PlayerBase extends AttackTower
 
     override public function draw () : Void
     {
-        var size = PlayerBase.SIZE;
+        var size = Base.SIZE;
 
         this.graphics.lineStyle (3, 0xFFFFFF, 1, true, LineScaleMode.NORMAL, CapsStyle.SQUARE, JointStyle.MITER);
         this.graphics.beginFill (0x333333);
@@ -62,8 +64,19 @@ class PlayerBase extends AttackTower
         this.hp -= d;
 
         if (this.hp <= 0) {
-            dispatchEvent (new PlayerBaseEvent (PlayerBaseEvent.BASE_DESTROYED));
+            dispatchEvent (new TowerEvent (TowerEvent.BASE_DESTROYED, this));
         }
+    }
+
+    // Base will always have energy
+    override public function hasEnergy () : Bool
+    {
+        return true;
+    }
+
+    override public function getName () : String
+    {
+        return NAME;
     }
 
 }

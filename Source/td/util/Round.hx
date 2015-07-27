@@ -7,8 +7,8 @@ import openfl.events.TimerEvent;
 import openfl.utils.Timer;
 
 import td.entity.enemy.Enemy;
-import td.event.EnemyEvent;
-import td.event.RoundEvent;
+import td.events.EnemyEvent;
+import td.events.RoundEvent;
 
 class Round extends EventDispatcher
 {
