@@ -59,7 +59,8 @@ class DistanceEnemy extends Enemy
         var base = this.gameStage.getBase ();
         var xdif = base.x - this.x;
         var ydif = base.y - this.y;
-        var dist = xdif * xdif + ydif * ydif;
+
+        baseDistance = Math.sqrt (xdif * xdif + ydif * ydif);
 
         if (waitReached)
         {
@@ -87,6 +88,7 @@ class DistanceEnemy extends Enemy
                     y: this.y - base.y
                 };
 
+                /* TODO handle division by 0 */
                 if (firstDif.x / secDif.x <= 0 || firstDif.y / secDif.y <= 0)
                 {
                     this.x = base.x;
@@ -101,7 +103,7 @@ class DistanceEnemy extends Enemy
         {
             var angle = Math.atan2(ydif, xdif);
 
-            if (dist <= DISTANCE_THRESHOLD * DISTANCE_THRESHOLD)
+            if (baseDistance <= DISTANCE_THRESHOLD)
                 waitReached = true;
 
             effects.apply (EffectType.SPEED);

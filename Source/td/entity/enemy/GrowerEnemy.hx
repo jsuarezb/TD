@@ -64,14 +64,15 @@ class GrowerEnemy extends Enemy
         var base = this.gameStage.getBase ();
         var xdif = base.x - this.x;
         var ydif = base.y - this.y;
-        var dist = xdif * xdif + ydif * ydif;
+
+        baseDistance = Math.sqrt (xdif * xdif + ydif * ydif);
 
         hp += hpRegen;
         hp = (hp <= this.level * HEALTH_CONSTANT) ? hp : this.level * HEALTH_CONSTANT;
         radius = hp  / (this.level * HEALTH_CONSTANT) * (MAX_RADIUS - MIN_RADIUS) + MIN_RADIUS;
         draw ();
 
-        if (dist < radius * radius) {
+        if (baseDistance < radius) {
             inflictDamage (gameStage.getBase());
             die ();
         } else {

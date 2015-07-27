@@ -7,8 +7,6 @@ import openfl.events.Event;
 import openfl.events.MouseEvent;
 import openfl.events.KeyboardEvent;
 import openfl.geom.Point;
-import openfl.display.GradientType;
-import openfl.geom.Matrix;
 import haxe.ds.IntMap;
 
 import td.entity.tower.*;
@@ -59,7 +57,6 @@ class GameStage extends Sprite
         this.towers = new IntMap<Tower> ();
         this.enemies = new IntMap<Enemy> ();
 
-        drawBackground ();
         drawParticlesContainer ();
         drawTowersEffects ();
 
@@ -103,24 +100,6 @@ class GameStage extends Sprite
         keyboard.onKeyPressed (Keyboard.P_KEY, togglePause);
     }
 
-    private function drawBackground () : Void
-    {
-        var bg : Shape = new Shape ();
-        var mtx : Matrix = new Matrix ();
-        mtx.createGradientBox (_width, _height, Math.PI / 4, 0, 0);
-
-        bg.graphics.beginGradientFill (
-            GradientType.LINEAR,
-            [0xF24A87, 0xF8A248],
-            [1, 1],
-            [0, 255],
-            mtx
-        );
-        bg.graphics.drawRect (0, 0, _width, _height);
-        bg.graphics.endFill ();
-        addChild (bg);
-    }
-
     private function drawParticlesContainer() : Void
     {
         particles = new ParticlesContainer (_width, _height);
@@ -141,12 +120,13 @@ class GameStage extends Sprite
         {
             if (i % 20 == 0)
             {
-                var t = Tower.create (Tower.BASIC_TOWER, Std.int (Math.random () * 19 + 1));
-                t.x = 300 + 30 * Math.cos (i * Math.PI / 180);
-                t.y = 300 + 30 * Math.sin (i * Math.PI / 180);
+                var t = Tower.create (Tower.BASIC_TOWER, 20);
+                t.x = 300 + 70 * Math.cos (i * Math.PI / 180);
+                t.y = 300 + 70 * Math.sin (i * Math.PI / 180);
                 addTower (t);
             }
         }
+
     }
 
     public function addTowerEffect (d : DisplayObject) : Void
@@ -335,7 +315,6 @@ class GameStage extends Sprite
      */
     private function onEnter (e : Event) : Void
     {
-        /* TODO pause and resumed gameplay */
         if (isPaused)
             return;
 
@@ -343,6 +322,10 @@ class GameStage extends Sprite
         if (level.enemiesRemaining () == 0 && !enemies.iterator ().hasNext ())
             endLevel (Level.ENEMIES_DESTROYED);
         */
+        if (keyboard.isPressed (Keyboard.X_KEY)) energyRange.showRange ();
+
+        for (e in enemies)
+            e.update ();
 
         energyRange.generate ();
 
@@ -350,10 +333,6 @@ class GameStage extends Sprite
             t.update ();
 
         highlightTower ();
-        if (keyboard.isPressed (Keyboard.X_KEY)) energyRange.showRange ();
-
-        for (e in enemies)
-            e.update ();
 
         particles.update ();
     }

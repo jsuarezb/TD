@@ -4,46 +4,107 @@
         "rounds": [
             {
                 "id": 0,
-                "enemyType": "spiral_enemy",
-                "zones": [0, 2],
-                "amount": 1000,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 20, "max": 40}
+                "timer": {"min": 20, "max": 75}
             },
             {
                 "id": 1,
                 "enemyType": "simple_enemy",
-                "zones": [1],
-                "amount": 250,
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 50, "max": 75}
+                "timer": {"min": 20, "max": 75}
             },
             {
                 "id": 2,
-                "enemyType": "distance_enemy",
+                "enemyType": "simple_enemy",
                 "zones": [0, 1, 2, 3],
-                "amount": 250,
+                "amount": 500,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 100, "max": 300},
-                "dependencies": [1]
+                "timer": {"min": 20, "max": 75}
             },
             {
                 "id": 3,
-                "enemyType": "fat_enemy",
-                "zones": [2],
-                "amount": 100,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 400, "max": 500},
-                "dependencies": [1]
+                "timer": {"min": 20, "max": 75}
             },
             {
                 "id": 4,
-                "enemyType": "grower_enemy",
-                "zones": [3],
-                "amount": 100,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
                 "level": {"min": 1, "max": 1},
-                "timer": {"min": 200, "max": 500},
-                "dependencies": [1]
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 5,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 6,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 7,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 8,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 9,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 10,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 11,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
+            },
+            {
+                "id": 12,
+                "enemyType": "simple_enemy",
+                "zones": [0, 1, 2, 3],
+                "amount": 500,
+                "level": {"min": 1, "max": 1},
+                "timer": {"min": 20, "max": 75}
             }
         ]
     }

@@ -2,7 +2,9 @@ package td.view.screens;
 
 import openfl.display.Sprite;
 import openfl.display.Shape;
+import openfl.display.GradientType;
 import openfl.events.Event;
+import openfl.geom.Matrix;
 
 import td.events.ScreenEvent;
 
@@ -13,9 +15,14 @@ class ScreenContainer extends Sprite
 
     private var transitionEffect : Shape;
 
+    private var bg : Shape;
+
     public function new (screen : Screen)
     {
         super ();
+
+        bg = new Shape ();
+        addChild (bg);
 
         transitionEffect = new Shape ();
         addScreen (screen);
@@ -52,6 +59,29 @@ class ScreenContainer extends Sprite
         currentScreen.addEventListener (ScreenEvent.TRANSITION, onScreenTransition);
     }
 
+    private function drawBackground () : Void
+    {
+        var mtx : Matrix = new Matrix ();
+        mtx.createGradientBox (stage.stageWidth, stage.stageHeight, Math.PI / 4, 0, 0);
+
+        bg.graphics.beginGradientFill (
+            GradientType.LINEAR,
+            [0xF24A87, 0xF8A248],
+            [1, 1],
+            [0, 255],
+            mtx
+        );
+        bg.graphics.drawRect (0, 0, stage.stageWidth, stage.stageHeight);
+        bg.graphics.endFill ();
+    }
+
+    private function drawTransition () : Void
+    {
+        transitionEffect.graphics.beginFill (0xFFFFFF);
+        transitionEffect.graphics.drawRect (0, 0, stage.stageWidth, stage.stageHeight);
+        transitionEffect.graphics.endFill ();
+    }
+
     /**
      * Callback to execute when container is added
      */
@@ -59,9 +89,8 @@ class ScreenContainer extends Sprite
     {
         removeEventListener (Event.ADDED_TO_STAGE, onAdded);
 
-        transitionEffect.graphics.beginFill (0xFFFFFF);
-        transitionEffect.graphics.drawRect (0, 0, stage.stageWidth, stage.stageHeight);
-        transitionEffect.graphics.endFill ();
+        drawBackground ();
+        drawTransition ();
 
         addChild (currentScreen);
         addChild (transitionEffect);
@@ -85,7 +114,7 @@ class ScreenContainer extends Sprite
     {
         currentScreen.removeEventListener (ScreenEvent.TRANSITION, onScreenTransition);
 
-        addScreen (e.screen);
+        transitionTo (e.screen);
     }
 
 }

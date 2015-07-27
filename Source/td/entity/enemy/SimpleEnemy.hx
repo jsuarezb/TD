@@ -47,9 +47,10 @@ class SimpleEnemy extends Enemy
         var base = this.gameStage.getBase ();
         var xdif = base.x - this.x;
         var ydif = base.y - this.y;
-        var dist = xdif * xdif + ydif * ydif;
+        
+        baseDistance = Math.sqrt (xdif * xdif + ydif * ydif);
 
-        if (dist < this.radius * this.radius)
+        if (baseDistance < this.radius)
         {
             inflictDamage (this.gameStage.getBase());
             die ();

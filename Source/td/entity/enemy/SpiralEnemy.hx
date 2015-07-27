@@ -47,18 +47,18 @@ class SpiralEnemy extends Enemy
         var base = this.gameStage.getBase ();
         var xdif = this.x - base.x;
         var ydif = this.y - base.y;
-        var dist = xdif * xdif + ydif * ydif;
 
-        if (dist < this.radius * this.radius) {
+        baseDistance = Math.sqrt (xdif * xdif + ydif * ydif);
+
+        if (baseDistance < this.radius) {
             inflictDamage (this.gameStage.getBase());
             die ();
         } else {
             this.effects.apply (EffectType.SPEED);
 
             var angle = Math.atan2(ydif, xdif) + (speed / 100);
-            dist = Math.sqrt (dist);
-            this.x = base.x + (dist - speed) * Math.cos (angle);
-            this.y = base.y + (dist - speed) * Math.sin (angle);
+            this.x = base.x + (baseDistance - speed) * Math.cos (angle);
+            this.y = base.y + (baseDistance - speed) * Math.sin (angle);
         }
     }
 

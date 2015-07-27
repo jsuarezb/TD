@@ -10,6 +10,8 @@ import td.events.ScreenEvent;
 class MainMenuScreen extends Screen
 {
 
+    private var button : SimpleButton;
+
     public function new ()
     {
         super ();
@@ -21,7 +23,7 @@ class MainMenuScreen extends Screen
         buttonGraphics.graphics.drawRect (0, 0, 50, 20);
         buttonGraphics.addChild (txt);
 
-        var button = new SimpleButton (buttonGraphics, buttonGraphics, buttonGraphics, buttonGraphics);
+        button = new SimpleButton (buttonGraphics, buttonGraphics, buttonGraphics, buttonGraphics);
         button.x = 300;
         button.y = 300;
         addChild (button);
@@ -32,6 +34,11 @@ class MainMenuScreen extends Screen
     private function onButtonClick (e : MouseEvent) : Void
     {
         transitionTo (new GameScreen ());
+    }
+
+    override public function destroy () : Void
+    {
+        button.removeEventListener (MouseEvent.CLICK, onButtonClick);
     }
 
 }

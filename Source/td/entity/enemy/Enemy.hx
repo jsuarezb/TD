@@ -6,6 +6,7 @@ import openfl.events.Event;
 import td.entity.Entity;
 import td.events.EnemyEvent;
 import td.view.components.GameStage;
+import td.view.screens.Screen;
 import td.util.effects.IEffect;
 import td.util.effects.EnemyEffect;
 import td.util.effects.EffectsCollection;
@@ -49,13 +50,15 @@ class Enemy extends Sprite implements Attacker
 
     public var value : Int;
 
-    public var zones : Array<Int>;
-
-    public var gameStage (null, default): GameStage;
-
     public var index : Int;
 
+    public var zones : Array<Int>;
+
     public var effects : EffectsCollection = new EffectsCollection ();
+
+    public var baseDistance : Float = 0;
+
+    public var gameStage (null, default): GameStage;
 
     public function new (level : Dynamic, zones : Array<Int>)
     {
@@ -65,6 +68,7 @@ class Enemy extends Sprite implements Attacker
 
         this.level = level;
         this.zones = zones;
+        this.baseDistance = Math.sqrt (Screen.WIDTH * Screen.WIDTH + Screen.HEIGHT * Screen.HEIGHT);
 
         addEventListener (Event.ADDED_TO_STAGE, onAdded);
     }

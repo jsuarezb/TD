@@ -16,7 +16,7 @@ class Main extends Sprite
 		var screens = new ScreenContainer (new MainMenuScreen ());
 		stage.addChild (screens);
 
-		var fps:FPS = new FPS(10, 560, 0xFFFFFF);
+		var fps:FPS = new FPS(10, 360, 0xFFFFFF);
 		stage.addChild(fps);
 	}
 
