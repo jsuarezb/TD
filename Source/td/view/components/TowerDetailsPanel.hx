@@ -2,7 +2,7 @@ package td.view.components;
 
 import openfl.display.Sprite;
 
-import td.entity.tower.Tower;
+import td.entity.towers.Tower;
 
 class TowerDetailsPanel extends Sprite
 {

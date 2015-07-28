@@ -1,7 +1,7 @@
 package td.util.effects;
 
 import td.entity.enemy.*;
-import td.entity.tower.PoisonTower;
+import td.entity.towers.PoisonTower;
 import td.util.effects.IEffect;
 import td.util.effects.EnemyEffect;
 

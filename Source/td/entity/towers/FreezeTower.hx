@@ -1,4 +1,4 @@
-package td.entity.tower;
+package td.entity.towers;
 
 import openfl.display.Shape;
 import openfl.utils.Timer;
@@ -7,7 +7,7 @@ import openfl.events.TimerEvent;
 import td.entity.enemy.Enemy;
 import td.util.effects.FreezeEffect;
 
-class FreezeTower extends AttackTower
+class FreezeTower extends SplashAttackTower
 {
 
     private static inline var NAME : String = "Freeze";
@@ -20,8 +20,6 @@ class FreezeTower extends AttackTower
 
     public static inline var BASE_RANGE : Float = 100;
 
-    private var splashes : Array<Shape>;
-
     public function new (level : Int, kills : Int)
     {
         super ();
@@ -32,13 +30,17 @@ class FreezeTower extends AttackTower
         this.rateOfFire = FreezeTower.BASE_RATE_OF_FIRE - level * 5;
         this.kills = kills;
         this.level = level;
-        this.splashes = new Array<Shape> ();
 
         this.timer = new Timer (this.rateOfFire);
         this.timer.addEventListener (TimerEvent.TIMER, shoot);
         this.timer.start ();
 
         draw ();
+    }
+
+    override public function getName () : String
+    {
+        return NAME;
     }
 
     override public function draw () : Void
@@ -54,29 +56,9 @@ class FreezeTower extends AttackTower
         super.draw ();
     }
 
-    override public function shoot (e : TimerEvent) : Void
+    override public function attack (enemy : Enemy) : Void
     {
-        if (!hasEnergy ())
-            return;
-
-        var enemies = this.gameStage.getEnemies ();
-        var hasAttacked = false;
-
-        for (enemy in enemies)
-        {
-            var d = sqrDistanceTo (enemy);
-
-            if (d <= this.range * this.range)
-            {
-                enemy.addEffect (new FreezeEffect (30, enemy));
-                hasAttacked = true;
-            }
-        }
-
-        if (hasAttacked)
-        {
-            drawSplash ();
-        }
+        enemy.addEffect (new FreezeEffect (30, enemy));
     }
 
     override public function update () : Void
@@ -95,12 +77,7 @@ class FreezeTower extends AttackTower
         }
     }
 
-    override public function getName () : String
-    {
-        return NAME;
-    }
-
-    private function drawSplash () : Void
+    override private function drawSplash () : Void
     {
         var splash = new Shape ();
 

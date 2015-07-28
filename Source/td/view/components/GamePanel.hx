@@ -4,7 +4,7 @@ import openfl.display.Sprite;
 import openfl.display.Shape;
 import openfl.text.TextFormatAlign;
 
-import td.entity.tower.Tower;
+import td.entity.towers.Tower;
 
 class GamePanel extends Sprite
 {

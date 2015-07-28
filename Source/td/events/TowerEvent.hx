@@ -2,7 +2,7 @@ package td.events;
 
 import openfl.events.Event;
 
-import td.entity.tower.Tower;
+import td.entity.towers.Tower;
 
 class TowerEvent extends Event
 {

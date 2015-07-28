@@ -9,7 +9,7 @@ import openfl.events.KeyboardEvent;
 import openfl.geom.Point;
 import haxe.ds.IntMap;
 
-import td.entity.tower.*;
+import td.entity.towers.*;
 import td.entity.enemy.*;
 import td.events.*;
 import td.util.*;
@@ -126,6 +126,11 @@ class GameStage extends Sprite
                 addTower (t);
             }
         }
+
+        var t = Tower.create (Tower.SATELLITE_TOWER, 20);
+        t.x = 200;
+        t.y = 300;
+        addTower (t);
 
     }
 
@@ -322,17 +327,18 @@ class GameStage extends Sprite
         if (level.enemiesRemaining () == 0 && !enemies.iterator ().hasNext ())
             endLevel (Level.ENEMIES_DESTROYED);
         */
-        if (keyboard.isPressed (Keyboard.X_KEY)) energyRange.showRange ();
+        energyRange.generate ();
 
         for (e in enemies)
             e.update ();
-
-        energyRange.generate ();
 
         for (t in towers)
             t.update ();
 
         highlightTower ();
+
+        if (keyboard.isPressed (Keyboard.X_KEY))
+            energyRange.showRange ();
 
         particles.update ();
     }

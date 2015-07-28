@@ -2,7 +2,7 @@ package td.util;
 
 import haxe.ds.ObjectMap;
 
-import td.entity.tower.*;
+import td.entity.towers.*;
 
 class EnergyRange
 {

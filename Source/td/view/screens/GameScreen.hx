@@ -3,7 +3,7 @@ package td.view.screens;
 import openfl.display.Sprite;
 import openfl.events.Event;
 
-import td.entity.tower.*;
+import td.entity.towers.*;
 import td.view.components.*;
 import td.events.*;
 

@@ -1,4 +1,4 @@
-package td.entity.tower;
+package td.entity.towers;
 
 import openfl.utils.Timer;
 

@@ -1,4 +1,4 @@
-package td.entity.tower;
+package td.entity.towers;
 
 import openfl.display.Shape;
 import openfl.utils.Timer;
@@ -6,7 +6,7 @@ import openfl.events.TimerEvent;
 
 import td.entity.enemy.Enemy;
 
-class SplashTower extends AttackTower
+class SplashTower extends SplashAttackTower
 {
 
     private static inline var NAME : String = "Area";
@@ -19,8 +19,6 @@ class SplashTower extends AttackTower
 
     public static inline var BASE_RANGE : Float = 100;
 
-    private var splashes : Array<Shape>;
-
     public function new (level : Int, kills : Int)
     {
         super ();
@@ -31,13 +29,17 @@ class SplashTower extends AttackTower
         this.rateOfFire = SplashTower.BASE_RATE_OF_FIRE - level * 5;
         this.kills = kills;
         this.level = level;
-        this.splashes = new Array<Shape> ();
 
         this.timer = new Timer (this.rateOfFire);
         this.timer.addEventListener (TimerEvent.TIMER, shoot);
         this.timer.start ();
 
         draw ();
+    }
+
+    override public function getName () : String
+    {
+        return NAME;
     }
 
     override public function draw () : Void
@@ -53,62 +55,21 @@ class SplashTower extends AttackTower
         super.draw ();
     }
 
-    override public function shoot (e : TimerEvent) : Void
+    override public function attack (enemy : Enemy) : Void
     {
-        if (!hasEnergy ())
-            return;
-
-        var enemies = this.gameStage.getEnemies ();
-        var hasAttacked = false;
-
-        for (enemy in enemies)
-        {
-            var d = sqrDistanceTo (enemy);
-
-            if (d <= this.range * this.range)
-            {
-                inflictDamage (enemy);
-                hasAttacked = true;
-            }
-        }
-
-        if (hasAttacked)
-        {
-            drawSplash ();
-        }
+        inflictDamage (enemy);
     }
 
-    override public function update () : Void
-    {
-        super.update ();
-
-        for (s in splashes)
-        {
-            if (s.alpha <= 0)
-            {
-                this.gameStage.removeChild (s);
-                this.splashes.remove (s);
-            }
-
-            s.alpha -= 0.02;
-        }
-    }
-
-    override public function getName () : String
-    {
-        return NAME;
-    }
-
-    private function drawSplash () : Void
+    override private function drawSplash () : Void
     {
         var splash = new Shape ();
 
         splash.graphics.beginFill (0xFFFFFF);
-        splash.graphics.drawCircle (this.x, this.y, this.range);
+        splash.graphics.drawCircle (x, y, range);
         splash.alpha = 0.5;
 
-        this.gameStage.addChild (splash);
-        this.splashes.push (splash);
+        gameStage.addChild (splash);
+        splashes.push (splash);
     }
 
 }

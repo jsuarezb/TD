@@ -34,6 +34,8 @@ class Enemy extends Sprite implements Attacker
 
     private static inline var BASE_PARTICLES : Int = 5;
 
+    public static var MAX_DISTANCE_TO_BASE : Float = Math.sqrt (Screen.WIDTH * Screen.WIDTH + Screen.HEIGHT * Screen.HEIGHT);
+
     public var level : Int;
 
     public var hp : Float;
@@ -192,5 +194,8 @@ class Enemy extends Sprite implements Attacker
     }
 
     public function destroy () : Void {}
+
+    /* TODO what to do with this method? Design flaw */
+    public function attack (e : Enemy) : Void {}
 
 }
